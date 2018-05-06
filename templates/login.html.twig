@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{%block body%}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('login') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="_password" />
+
+        {#
+            If you want to control the URL the user
+            is redirected to on success (more details below)
+            <input type="hidden" name="_target_path" value="/account" />
+        #}
+
+        <label for="mfaCode">2-Step Authentication Code</label>
+        <input type="number" id="mfaCode" name="mfaCode" value="" autocomplete="off"/>
+        <label for="deviceType">
+            <input type="checkbox" id="deviceType" name="deviceType" value="secure">
+            <span>Secure Device</span>
+        </label>
+
+        <button type="submit">login</button>
+    </form>
+{%endblock%}
+
