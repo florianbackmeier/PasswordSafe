@@ -1,0 +1,14 @@
+{% if entry.sharedItem is null %}
+    {% set url = '/get?id='~entry.id %}
+{% else %}
+    {% set url = '/getSharedItem?id='~entry.sharedItem.id %}
+{% endif %}
+
+<a href="{{url}}" class="mdc-list-item__text">
+    {% block title %}{% if entry.name is empty %}Untitled{% else %}{{ entry.name }}{% endif %}{% endblock %}
+</a>
+
+{% if entry.sharedItem is null %}
+    <a href="/edit?id={{ entry.id }}" class="mdc-list-item__meta material-icons" aria-hidden="true">edit</a>
+{% endif %}
+

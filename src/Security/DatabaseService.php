@@ -1,6 +1,7 @@
 <?php
 namespace App\Security;
 
+use App\Entity\DatabaseMetaRow;
 use App\Security\Authentication\UsernameKeyToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

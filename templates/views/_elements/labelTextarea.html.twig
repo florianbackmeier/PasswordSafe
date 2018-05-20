@@ -1,0 +1,7 @@
+{% if value is not defined  %}
+  {% set value = '' %}
+{% endif %}
+<div class="mdl-textfield mdl-js-textfield">
+  <textarea class="mdl-textfield__input" type="text" rows="10" id="input_{{name}}" name="{{name}}">{{value}}</textarea>
+  <label class="mdl-textfield__label" for="input_{{name}}">{{label}}</label>
+</div>

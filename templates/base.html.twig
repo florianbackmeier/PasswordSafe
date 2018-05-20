@@ -1,12 +1,43 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
-</html>
+{% extends 'skeleton.html.twig' %}
+
+{% block body %}
+<header class="mdc-top-app-bar" data-mdc-auto-init="MDCTopAppBar">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <a href="javascript:void(0);" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <span class="mdc-top-app-bar__title">{% block title %}PasswordSafe{% endblock %}</span>
+    </section>
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+      <a href="{{ path('logout') }}" class="material-icons mdc-top-app-bar__action-item" aria-label="Logout" alt="Logout">exit_to_app</a>
+    </section>
+  </div>
+</header>
+<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+  <nav class="mdc-drawer__drawer">
+    <header class="mdc-drawer__header">
+      <div class="mdc-drawer__header-content">
+        <img src="/images/logo.svg" />
+        <h1 class="mdc-typography mdc-typography--headline6">PasswordSafe</h1>
+      </div>
+    </header>
+    <nav class="mdc-drawer__content mdc-list  mdc-list--dense">
+      {% block sideNavigation %}
+        {% include '_tpl/navigation.html.twig' %}
+      {% endblock %}
+    </nav>
+  </nav>
+</aside>
+<div class="page">
+    <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
+      <div class="mdc-drawer__toolbar-spacer"></div>
+      <div class="mdc-drawer__content">
+        <nav class="mdc-list">
+          {{ block('sideNavigation') }}
+        </nav>
+      </div>
+    </nav>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

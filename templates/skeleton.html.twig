@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+      <title>{% block title %}PasswordSafe{% endblock %}</title>
+      <link rel="stylesheet" href="/app.css">
+      <script src="/app.js" async></script>
+      <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="icon" href="/images/favicon.png">
+      {% block head %}{% endblock %}
+      {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+      {% block body %}{% endblock %}
+      {% block javascripts %}{% endblock %}
+    </body>
+</html>

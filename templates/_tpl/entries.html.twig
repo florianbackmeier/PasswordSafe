@@ -1,0 +1,5 @@
+<ul class="mdc-list mdc-card entries">
+  {% for row in db %}
+    <li class="mdc-list-item">{% include '_tpl/type.html.twig'  with {'entry': row} %}</li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,14 @@
+{% if type is not defined  %}
+  {% set type = 'text' %}
+{% endif %}
+{% if value is not defined  %}
+  {% set value = '' %}
+{% endif %}
+{% if errors[name] is defined  %}
+  {% set error = errors[name] %}
+{% endif %}
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if error is defined %}is-invalid{% endif %}">
+  <input class="mdl-textfield__input" type="{{type}}" name="{{name}}" id="input_{{name}}" value="{{value}}" />
+  <label class="mdl-textfield__label" for="input_{{name}}">{{label}}</label>
+  {% if error is defined %}<span class="mdl-textfield__error">{{error}}</span>{% endif %}
+</div>

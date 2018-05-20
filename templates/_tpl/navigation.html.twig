@@ -1,0 +1,8 @@
+<a class="mdc-list-item" href="{{ path('home') }}">Main category</a>
+{% for category in categories %}
+    <a class="mdc-list-item" href="{{ path('category', {'categorySlug': category | categorySlug }) }}">{{category}}</a>
+{% endfor %}
+<a class="mdc-list-item" href="{{ path('sharedItems') }}">Shared Items</a>
+<div class="mdc-drawer__toolbar-spacer"></div>
+<a class="mdc-list-item" href="{{ path('settings') }}">Settings</a>
+<a class="mdc-list-item" href="{{ path('logout') }}">Logout</a>

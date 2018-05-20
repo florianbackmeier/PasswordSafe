@@ -1,0 +1,19 @@
+{% set id = random(1000) %}
+<div class="dialog dialog{{ id }} mdl-card mdl-shadow--8dp">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">{% block title %}{% if entry.name is empty %}Untitled{% else %}{{ entry.name }}{% endif %}{% endblock %}</h2>
+    </div>
+    {% block content %}{% endblock %}
+    <div class="mdl-card__menu">
+        {% if entry.sharedItem is null %}
+            <button data-ajax="/edit?id={{ entry.id }}" data-target="main" data-remove=".dialog{{ id }}"
+                    class="js_close mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">edit</i>
+            </button>
+        {% endif %}
+        <button data-remove=".dialog{{ id }}"
+                class="js_close mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">clear</i>
+        </button>
+    </div>
+</div>

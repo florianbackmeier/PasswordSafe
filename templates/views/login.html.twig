@@ -1,0 +1,60 @@
+{% extends 'PasswordSafeBundle:_tpl:baseSkeleton.html.twig' %}
+
+{% block title %}PasswordSafe{% endblock %}
+
+{% block body %}
+    <form class="login" action="{{ path('login_check') }}" method="post">
+        <div class="header">
+            <h1 class="logo">Password<span>Safe</span></h1>
+        </div>
+        <div class="mdl-card mdl-shadow--8dp">
+            <div class="mdl-card__title mdl-card--border">
+                <h2 class="mdl-card__title-text">Login</h2>
+            </div>
+            {% if error %}
+                <div class="error mdl-card__supporting-text">
+                    {{ error.message }}
+                </div>
+            {% endif %}
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__panel is-active" id="page1">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-textfield__label" for="username">Username</label>
+                        <input class="mdl-textfield__input" type="text" id="username" name="_username" value=""
+                               autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                    </div>
+
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-textfield__label" for="password">Password</label>
+                        <input class="mdl-textfield__input" type="password" id="password" name="_password" value=""/>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a id="nextPage"
+                           class="mdl-tabs__tab mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                           href="#page2">Next</a>
+                    </div>
+                </div>
+
+                <div class="mdl-tabs__panel" id="page2">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-textfield__label" for="mfaCode">2-Step Authentication Code</label>
+                        <input class="mdl-textfield__input" type="number" id="mfaCode" name="mfaCode" value=""
+                               autocomplete="off"/>
+                    </div>
+                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+                        <input type="checkbox" id="switch-1" class="mdl-switch__input" name="deviceType" value="secure">
+                        <span class="mdl-switch__label">Secure Device</span>
+                    </label>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-tabs__tab mdl-button mdl-js-button mdl-button--primary" href="#page1">Back</a>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                        <input type="submit" name="login" value="Login"
+                               class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script src="/bundles/passwordsafe/js/login.js" async></script>
+{% endblock %}

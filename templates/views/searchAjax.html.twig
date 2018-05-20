@@ -1,0 +1,6 @@
+<a class="mdl-button mdl-js-button mdl-button--raised" href="/">Back</a><br /><br />
+{% if db is empty %}
+  No results available.
+{% else %}
+  {% include 'PasswordSafeBundle:_tpl:entries.html.twig' %}</li>
+{% endif %}

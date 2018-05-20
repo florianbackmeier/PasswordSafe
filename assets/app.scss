@@ -1,0 +1,85 @@
+$mdc-theme-primary: #F44336;
+$mdc-theme-secondary: #448AFF;
+$mdc-theme-on-primary: #FFF;
+$mdc-theme-on-secondary: #FFF;
+
+$borderColor: rgba(0, 0, 0, .1);
+
+@import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/drawer/mdc-drawer";
+@import "@material/typography/mdc-typography";
+@import "@material/list/mdc-list";
+@import "@material/card/mdc-card";
+@import "@material/fab/mdc-fab";
+
+html, body {
+  margin: 0;
+  background: #F2F2F2;
+}
+
+a {
+  text-decoration: none;
+  color: $mdc-theme-primary;
+}
+
+.mdc-top-app-bar {
+  z-index: 10;
+}
+
+.mdc-drawer {
+  &.mdc-drawer--temporary {
+    display: none;
+    z-index: 10;
+
+    .mdc-drawer__header-content {
+      flex-flow: column;
+      align-items: center;
+
+      img {
+        display: block;
+        height: 60%;
+      }
+    }
+  }
+}
+.mdc-top-app-bar .mdc-top-app-bar__navigation-icon {
+  display: none;
+}
+.mdc-top-app-bar .mdc-top-app-bar__title {
+  padding-left: 0px;
+}
+@media (max-width: 1320px) {
+  .mdc-drawer.mdc-drawer--temporary {
+    display: block;
+  }
+  .mdc-drawer.mdc-drawer--permanent {
+    display: none;
+  }
+  .mdc-top-app-bar .mdc-top-app-bar__navigation-icon {
+    display: block;
+  }
+  .mdc-top-app-bar .mdc-top-app-bar__title {
+    padding-left: 20px;
+  }
+}
+
+body > .page {
+  display: flex;
+
+  main {
+    $topBarSize: 64px;
+    padding: $topBarSize+20px 20px 80px;
+    flex-grow: 1;
+  }
+}
+
+.entries {
+  li a {
+    color: #000;
+
+    &.mdc-list-item__text {
+      flex-grow: 1;
+      line-height: 48px;
+    }
+  }
+}
