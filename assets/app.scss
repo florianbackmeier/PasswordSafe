@@ -11,6 +11,9 @@ $borderColor: rgba(0, 0, 0, .1);
 @import "@material/list/mdc-list";
 @import "@material/card/mdc-card";
 @import "@material/fab/mdc-fab";
+@import "@material/button/mdc-button";
+@import "@material/icon-toggle/mdc-icon-toggle";
+@import "@material/snackbar/mdc-snackbar";
 
 html, body {
   margin: 0;
@@ -74,6 +77,9 @@ body > .page {
 }
 
 .entries {
+  max-width: 600px;
+  margin: auto;
+
   li a {
     color: #000;
 
@@ -81,5 +87,30 @@ body > .page {
       flex-grow: 1;
       line-height: 48px;
     }
+  }
+
+  &.mdc-list li h2 {
+    margin: 0;
+  }
+}
+
+.entry {
+  padding: 20px 20px;
+  max-width: 600px;
+  margin: auto;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .mdc-card__actions {
+    padding: 20px 0 0;
+  }
+
+  .undisclosed .disclosed {
+    display: none;
+  }
+  .disclosed .undisclosed {
+    display: none;
   }
 }

@@ -70,7 +70,7 @@ class RSAService
         $rsa->loadKey($this->databaseService->getMeta($token)->get('privateKey'));
 
 
-        $item = $this->entity_manager->getRepository('PasswordSafeBundle:SharedPassword')->find($id);
+        $item = $this->entity_manager->getRepository(SharedPassword::class)->find($id);
         if ($item->getReceiver() != $token->getUser()) {
             return;
         }

@@ -1,21 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block main %}
-    <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">{% block title %}{% if entry.name is empty %}Untitled{% else %}{{ entry.name }}{% endif %}{% endblock %}</h2>
-    </div>
-    {% block content %}{% endblock %}
-    <div class="mdl-card__menu">
-        {% if entry.sharedItem is null %}
-            <button data-ajax="/edit?id={{ entry.id }}" data-target="main" data-remove=".dialog"
-                    class="js_close mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                <i class="material-icons">edit</i>
-            </button>
-        {% endif %}
-        <button data-remove=".dialog"
-                class="js_close mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">clear</i>
-        </button>
-    </div>
+{% if sharedItem is defined and sharedItem %}
+    {% set backUrl = path('sharedItems') %}
+{% elseif entry.category is empty %}
+    {% set backUrl = path('home') %}
+{% else %}
+    {% set backUrl = path('category', {'categorySlug': entry.category | categorySlug }) %}
+{% endif %}
 
+
+{% block main %}
+    <div class="mdc-card entry">
+        <h2 class="mdc-typography--headline6">
+            {% block title %}{% if entry.name is empty %}Untitled - {{parent()}}{% else %}{{ entry.name }} - {{parent()}}{% endif %}{% endblock %}
+         </h2>
+        {% block content %}{% endblock %}
+        <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons">
+                <a href="{{ backUrl }}" class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple">
+                    Back
+                </a>
+                {% if entry.sharedItem is null %}
+                    <a href="/edit?id={{ entry.id }}" class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised" data-mdc-auto-init="MDCRipple">
+                        Edit
+                    </a>
+                {% endif %}
+            </div>
+            {% block additionalButtons %}{% endblock %}
+        </div>
+    </div>
 {% endblock %}

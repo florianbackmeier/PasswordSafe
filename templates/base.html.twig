@@ -5,14 +5,14 @@
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
       <a href="javascript:void(0);" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
-      <span class="mdc-top-app-bar__title">{% block title %}PasswordSafe{% endblock %}</span>
+      <span class="mdc-top-app-bar__title">{{block('title')}}</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
       <a href="{{ path('logout') }}" class="material-icons mdc-top-app-bar__action-item" aria-label="Logout" alt="Logout">exit_to_app</a>
     </section>
   </div>
 </header>
-<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+<aside class="mdc-drawer mdc-drawer--temporary mdc-typography" data-mdc-auto-init="MDCTemporaryDrawer">
   <nav class="mdc-drawer__drawer">
     <header class="mdc-drawer__header">
       <div class="mdc-drawer__header-content">
@@ -39,5 +39,11 @@
     <main>
         {% block main %}{% endblock %}
     </main>
+    <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">
+      <div class="mdc-snackbar__text"></div>
+      <div class="mdc-snackbar__action-wrapper">
+        <button type="button" class="mdc-snackbar__action-button"></button>
+      </div>
+    </div>
 </div>
 {% endblock %}

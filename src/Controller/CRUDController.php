@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\DatabaseRow;
 use App\Entity\SharedPassword;
 use App\Entity\User;
+use App\Security\RSAService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -33,12 +34,12 @@ class CRUDController extends AbstractDatabaseController
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function getSharedItem(Request $request)
+    public function getSharedItem(Request $request, RSAService $RSAService)
     {
         $id = $request->query->get('id');
-        $row = $this->get('passwordSafe.rsaService')->getSharedItem($id, $this->get('security.token_storage')->getToken());
+        $row = $RSAService->getSharedItem($id, $this->get('security.token_storage')->getToken());
 
-        return $this->render('_types/' . $row->getType() . '.html.twig', array('entry' => $row));
+        return $this->render('_types/' . $row->getType() . '.html.twig', array_merge($this->defaultModel(), array('entry' => $row, 'sharedItem'=> true)));
     }
 
     /**
