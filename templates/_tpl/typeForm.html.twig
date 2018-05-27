@@ -13,7 +13,7 @@
         </nav>
         <div class="mdc-tab-panel mdc-tab-panel__active" id="form_main">
             {% block content %}
-                <div>{% include '_elements/textfield.html.twig' with {'name': 'name', 'label': 'Name', 'value': entry.name is defined ? entry.name : ''} %}</div>
+                    <div>{% include '_elements/textfield.html.twig' with {'name': 'name', 'label': 'Name', 'value': entry.name is defined ? entry.name : ''} %}</div>
             {% endblock %}
         </div>
         <div class="mdc-tab-panel mdc-tab-panel-share" id="form_share">
@@ -35,7 +35,7 @@
         <div class="mdc-tab-panel" id="form_settings">
             <div class="mdc-select category-select" data-mdc-auto-init="MDCSelect">
                 <select name="category"  class="mdc-select__native-control">
-                    <option value="">Main category</option>
+                    <option value="" selected></option>
                     {% for categoryItem in categories %}
                         {% if entry.attributes.category is defined and entry.attributes.category == categoryItem or category == categoryItem %}
                             <option selected>{{ categoryItem }}</option>

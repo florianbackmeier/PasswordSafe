@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller;
 
-use PasswordSafeBundle\Security\UsernameKeyToken;
+use App\Security\Authentication\UsernameKeyToken;
+use App\Security\EncryptionService;
+use App\Security\RSAService;
 use QRcode;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,7 +15,7 @@ class SettingsController extends AbstractController
 {
     /**
      * @Route("/settings", name="settings")
-     * @Template("settings:overview.html.twig")
+     * @Template("settings/overview.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsAction()
@@ -24,7 +26,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/password", name="settingsPassword")
      * @Method({"GET"})
-     * @Template("PasswordSafeBundle:settings:password.html.twig")
+     * @Template("settings/password.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsPasswordAction()
@@ -39,12 +41,11 @@ class SettingsController extends AbstractController
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function settingsPasswordActionPost(Request $request)
+    public function settingsPasswordActionPost(Request $request, EncryptionService $encryptionService)
     {
         if (!$this->validateToken($request->request->get('csrf_token'))) {
             return $this->createForbiddenResponse();
         }
-        $encryptionService = $this->get('passwordSafe.encryptionService');
         $token = $this->get('security.token_storage')->getToken();
         $user = $token->getUser();
 
@@ -72,12 +73,11 @@ class SettingsController extends AbstractController
 
         if (!empty($errors)) {
             $db = $user->getSafeDatabase();
-            return $this->render('PasswordSafeBundle:settings:password.html.twig', array_merge($this->defaultModel(), array('errors' => $errors, 'keyiterations' => $db->getKeyIterations())));
+            return $this->render('settings/password.html.twig', array_merge($this->defaultModel(), array('errors' => $errors, 'keyiterations' => $db->getKeyIterations())));
         }
 
         $em = $this->getDoctrine()->getManager();
-        $databaseService = $this->get('passwordSafe.databaseService');
-        $rows = $databaseService->getDatabaseRows($token);
+        $rows = $this->databaseService->getDatabaseRows($token);
         $db = $user->getSafeDatabase();
 
         $key = $encryptionService->generateKey($password, $db->getSalt(), $iterations);
@@ -98,7 +98,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/mfa", name="settingsMFA")
      * @Method({"GET"})
-     * @Template("PasswordSafeBundle:settings:mfa.html.twig")
+     * @Template("settings/mfa.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsMFA()
@@ -121,9 +121,9 @@ class SettingsController extends AbstractController
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function settingsRSA()
+    public function settingsRSA(RSAService $RSAService)
     {
-        $this->get('passwordSafe.rsaService')->generateKeys($this->get('security.token_storage')->getToken());
+        $RSAService->generateKeys($this->get('security.token_storage')->getToken());
 
         return $this->redirectToRoute('settings');
     }
@@ -131,14 +131,13 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/personalization", name="settingsPersonalization")
      * @Method({"GET"})
-     * @Template("PasswordSafeBundle:settings:personalization.html.twig")
+     * @Template("settings/personalization.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsPersonalizationAction()
     {
-        $databaseService = $this->get('passwordSafe.databaseService');
         $token = $this->get('security.token_storage')->getToken();
-        $meta = $databaseService->getMeta($token);
+        $meta = $this->databaseService->getMeta($token);
         return array_merge($this->defaultModel(), array('meta' => $meta));
     }
 
@@ -152,16 +151,18 @@ class SettingsController extends AbstractController
         if (!$this->validateToken($request->request->get('csrf_token'))) {
             return $this->createForbiddenResponse();
         }
-        $databaseService = $this->get('passwordSafe.databaseService');
         $token = $this->get('security.token_storage')->getToken();
 
         $startCategory = $request->request->get('startCategory');
-        $meta = $databaseService->getMeta($token);
+        $meta = $this->databaseService->getMeta($token);
+        if ( $startCategory === '_' ) {
+            $startCategory = '';
+        }
         $meta->add('startCategory', $startCategory);
 
-        $databaseService->saveMetaRow($token, $meta);
+        $this->databaseService->saveMetaRow($token, $meta);
 
-        return $this->redirectToRoute('settingsPersonalization');
+        return $this->redirectToRoute('settings');
     }
 
 }

@@ -5,9 +5,12 @@ import {MDCRipple} from '@material/ripple';
 import {MDCIconToggle} from '@material/icon-toggle';
 import {MDCSnackbar} from '@material/snackbar';
 import {MDCTextField} from '@material/textfield';
+import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 import {MDCTab, MDCTabBar} from '@material/tabs';
 import {MDCSelect} from '@material/select';
 import clipboard from 'clipboard-copy';
+import {MDCFormField} from '@material/form-field';
+import {MDCCheckbox} from '@material/checkbox';
 
 mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
 mdcAutoInit.register('MDCTemporaryDrawer', MDCTemporaryDrawer);
@@ -18,6 +21,9 @@ mdcAutoInit.register('MDCTextField', MDCTextField);
 mdcAutoInit.register('MDCTab', MDCTab);
 mdcAutoInit.register('MDCTabBar', MDCTabBar);
 mdcAutoInit.register('MDCSelect', MDCSelect);
+mdcAutoInit.register('MDCTextFieldHelperText', MDCTextFieldHelperText);
+mdcAutoInit.register('MDCFormField', MDCFormField);
+mdcAutoInit.register('MDCCheckbox', MDCCheckbox);
 
 mdcAutoInit();
 

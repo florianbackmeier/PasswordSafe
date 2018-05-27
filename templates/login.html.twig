@@ -5,27 +5,13 @@
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('login') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+    <form action="{{ path('login') }}" method="post" class="mdc-card mdc-card--login">
+        <h1 class="mdc-typography mdc-typography--headline4">Password<span>Safe</span></h1>
+        {% include '_elements/textfield.html.twig' with {'name': '_username', 'label': 'Username', 'value': last_username} %}
+        {% include '_elements/textfield.html.twig' with {'name': '_password', 'label': 'Password', 'value': '', type: 'password'} %}
+        {% include '_elements/textfield.html.twig' with {'name': 'mfaCode', 'label': '2-Step Authentication Code', 'value': '', type: 'number', attr: 'autocomplete="off"'} %}
+        <div class="mdc-card__content--left">{% include '_elements/checkbox.html.twig' with {'name': 'deviceType', 'label': 'Secure Device'} %}</div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password" />
-
-        {#
-            If you want to control the URL the user
-            is redirected to on success (more details below)
-            <input type="hidden" name="_target_path" value="/account" />
-        #}
-
-        <label for="mfaCode">2-Step Authentication Code</label>
-        <input type="number" id="mfaCode" name="mfaCode" value="" autocomplete="off"/>
-        <label for="deviceType">
-            <input type="checkbox" id="deviceType" name="deviceType" value="secure">
-            <span>Secure Device</span>
-        </label>
-
-        <button type="submit">login</button>
+        <div><button type="submit" class="mdc-button mdc-button--raised">Login</button></div>
     </form>
 {%endblock%}
-

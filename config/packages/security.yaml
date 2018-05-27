@@ -13,6 +13,7 @@ security:
               authenticator: App\Security\Authentication\SafeAuthenticator
               login_path: login
               check_path: login
+              success_handler: App\Security\Authentication\AuthenticationSuccessHandler
             logout:
                path: logout
                target: /

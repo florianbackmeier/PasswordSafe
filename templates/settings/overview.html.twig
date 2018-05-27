@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block title %}Settings{% endblock %}
+
+{% block main %}
+<div class="mdc-container">
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+    <h2 class="mdc-typography--headline6">Password</h2>
+    <p>
+      You can change your main authentication secret here and also adjusts the key iterations for generating the hash for your data.
+    </p>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settingsPassword')}}">Change your password</a>
+        </div>
+    </div>
+  </div>
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+    <h2 class="mdc-typography--headline6">Multi-factor authentication</h2>
+    <p>Regenerate your two-factor authentication code. Get your token generator ready for action. You can't cancel this.</p>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settingsMFA')}}">Regenerate token</a>
+         </div>
+    </div>
+  </div>
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+    <h2 class="mdc-typography--headline6">Public and private keys</h2>
+    <p>
+      For sharing of passwords a private and a public key is generated for you.<br />
+      Warning: Be careful when you shared many passwords. Maybe you have to change your script time limit etc.
+    </p>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settingsRegenerateKeys')}}">Regenerate keys</a>
+        </div>
+    </div>
+  </div>
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+    <h2 class="mdc-typography--headline6">Personalization</h2>
+    <p>
+      Set your start category after login
+      <br /><br /><br />
+    </p>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settingsPersonalization')}}">Personalize your safe</a>
+        </div>
+    </div>
+  </div>
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+    <h2 class="mdc-typography--headline6">Export</h2>
+    <p>
+      Backup your own data encrypted. You download an executable php file where you have to enter the password to see your data.<br />
+      Note: You need to have php with mcrypt installed.
+    </p>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('export')}}?csrf_token={{ csrf_token }}">Export your passwordSafe</a>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

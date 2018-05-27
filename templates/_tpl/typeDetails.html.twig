@@ -8,11 +8,11 @@
     {% set backUrl = path('category', {'categorySlug': entry.category | categorySlug }) %}
 {% endif %}
 
-
+{% block title %}{% if entry.name is empty %}Untitled - {{parent()}}{% else %}{{ entry.name }} - {{parent()}}{% endif %}{% endblock %}
 {% block main %}
     <div class="mdc-card entry">
         <h2 class="mdc-typography--headline6">
-            {% block title %}{% if entry.name is empty %}Untitled - {{parent()}}{% else %}{{ entry.name }} - {{parent()}}{% endif %}{% endblock %}
+            {% if entry.name is empty %}Untitled{% else %}{{ entry.name }}{% endif %}
          </h2>
         {% block content %}{% endblock %}
         <div class="mdc-card__actions">

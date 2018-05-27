@@ -15,13 +15,17 @@ $borderColor: rgba(0, 0, 0, .1);
 @import "@material/icon-toggle/mdc-icon-toggle";
 @import "@material/snackbar/mdc-snackbar";
 @import "@material/textfield/mdc-text-field";
+@import "@material/textfield/helper-text/mdc-text-field-helper-text";
 @import "@material/tabs/mdc-tabs";
 @import "@material/switch/mdc-switch";
 @import "@material/select/mdc-select";
+@import "@material/form-field/mdc-form-field";
+@import "@material/checkbox/mdc-checkbox";
 
 html, body {
   margin: 0;
   background: #F2F2F2;
+  height: 100%;
 }
 
 a {
@@ -31,6 +35,67 @@ a {
 
 .mdc-top-app-bar {
   z-index: 10;
+}
+
+.mdc-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .mdc-card {
+    margin: 0 20px 20px 0;
+  }
+  .mdc-card__300 {
+    width: 300px;
+  }
+}
+
+.mdc-card--content {
+  padding: 20px;
+}
+.mdc-card--login {
+  position: relative;
+  width: 300px;
+  padding: 20px;
+  margin: 250px auto 0;
+  text-align: center;
+
+  img {
+    width: 60%;
+    margin: auto;
+  }
+  .mdc-card__content--left {
+    text-align: left;
+  }
+
+  h1 {
+    color: $mdc-theme-primary;
+    margin: 0;
+
+    span {
+      color: #000;
+    }
+  }
+
+  .mdc-button {
+    margin-top: 30px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -170px;
+    display: block;
+    background: url('/images/logo.svg') no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    height: 150px;
+  }
+
+  @media only screen and (max-device-width: 1025px) {
+    margin-top: 200px;
+  }
 }
 
 .mdc-card__actions {
@@ -56,6 +121,9 @@ a {
 .mdc-select__native-control {
   -webkit-appearance: none;
 }
+.mdc-form-field {
+  margin-left: -11px;
+}
 .mdc-top-app-bar .mdc-top-app-bar__navigation-icon {
   display: none;
 }
@@ -79,6 +147,7 @@ a {
 
 body > .page {
   display: flex;
+  height: 100%;
 
   main {
     $topBarSize: 64px;

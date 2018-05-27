@@ -5,12 +5,19 @@
 {% if value is not defined  %}
   {% set value = '' %}
 {% endif %}
+{% if attr is not defined  %}
+  {% set attr = '' %}
+{% endif %}
 {% if errors[name] is defined  %}
   {% set error = errors[name] %}
 {% endif %}
-<div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
-  <input type="{{type}}" id="textfield{{id}}" class="mdc-text-field__input" name="{{name}}" value="{{value}}">
+<div class="mdc-text-field {% if error is defined %}mdc-text-field__error{% endif %}" data-mdc-auto-init="MDCTextField">
+  <input type="{{type}}" id="textfield{{id}}" class="mdc-text-field__input" name="{{name}}" value="{{value}}" {{attr}}>
   <label class="mdc-floating-label" for="textfield{{id}}">{{label}}</label>
   <div class="mdc-line-ripple"></div>
-  {% if error is defined %}<span class="mdc-text-field__error">{{error}}</span>{% endif %}
 </div>
+{% if error is defined %}
+<p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" data-mdc-auto-init="MDCTextFieldHelperText">
+  {{error}}
+</p>
+{% endif %}

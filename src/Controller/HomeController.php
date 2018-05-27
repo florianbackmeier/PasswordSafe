@@ -24,7 +24,6 @@ class HomeController extends AbstractController {
     public function homeAction()
     {
         $token = $this->get('security.token_storage')->getToken();
-
         $rows = $this->databaseService->getDatabaseRows($token, '');
 
         return array_merge($this->defaultModel(), array('db' => $rows, 'category' => 'default'));
