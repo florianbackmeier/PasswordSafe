@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {%block body%}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+
 
     <form action="{{ path('login') }}" method="post" class="mdc-card mdc-card--login">
         <h1 class="mdc-typography mdc-typography--headline4">Password<span>Safe</span></h1>
+        {% if login_error %}
+            <div class="error">{{ login_error.messageKey|trans(login_error.messageData, 'security') }}</div>
+        {% endif %}
         {% include '_elements/textfield.html.twig' with {'name': '_username', 'label': 'Username', 'value': last_username} %}
         {% include '_elements/textfield.html.twig' with {'name': '_password', 'label': 'Password', 'value': '', type: 'password'} %}
         {% include '_elements/textfield.html.twig' with {'name': 'mfaCode', 'label': '2-Step Authentication Code', 'value': '', type: 'number', attr: 'autocomplete="off"'} %}

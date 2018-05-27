@@ -17,7 +17,7 @@ class SecurityController extends Controller
 
         return $this->render('login.html.twig', array(
             'last_username' => $lastUsername,
-            'error' => $error,
+            'login_error' => $error,
         ));
     }
 

@@ -3703,6 +3703,12 @@ a {
   text-decoration: none;
   color: #F44336; }
 
+.error {
+  border-top: 2px solid #ff6666;
+  border-bottom: 2px solid #ff6666;
+  background: #ffcccc;
+  padding: 10px 0; }
+
 .mdc-top-app-bar {
   z-index: 10; }
 
@@ -3730,7 +3736,7 @@ a {
     text-align: left; }
   .mdc-card--login h1 {
     color: #F44336;
-    margin: 0; }
+    margin: 0 0 15px; }
     .mdc-card--login h1 span {
       color: #000; }
   .mdc-card--login .mdc-button {

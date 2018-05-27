@@ -1,10 +1,12 @@
 <?php
 namespace App\Controller;
 
+use App\Security\Authentication\MfaService;
 use App\Security\Authentication\UsernameKeyToken;
 use App\Security\EncryptionService;
 use App\Security\RSAService;
-use QRcode;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -101,19 +103,18 @@ class SettingsController extends AbstractController
      * @Template("settings/mfa.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
-    public function settingsMFA()
+    public function settingsMFA(MfaService $mfaService)
     {
         $token = $this->get('security.token_storage')->getToken();
         $user = $token->getUser();
 
-        $url = $this->get('passwordSafe.mfaService')->createMfaURL($user);
+        $url = $mfaService->createMfaURL($user);
 
-        require_once(__DIR__ . '/../Libraries/phpqrcode/qrlib.php');
-        ob_start();
-        QRcode::svg($url);
-        $qrCode = preg_replace('/^.+\n.+\n/', '', ob_get_clean());
-
-        return array_merge($this->defaultModel(), array('qrCode' => $qrCode, 'url' => $url));
+        $options = new QROptions([
+            'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+        ]);
+        $qrcode = new QRCode($options);
+        return array_merge($this->defaultModel(), array('qrCode' => $qrcode->render($url), 'url' => $url));
     }
 
     /**

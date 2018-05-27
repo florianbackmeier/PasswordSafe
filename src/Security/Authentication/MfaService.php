@@ -2,6 +2,7 @@
 namespace App\Security\Authentication;
 
 use App\Entity\User;
+use Base2n;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MfaService
@@ -15,7 +16,7 @@ class MfaService
 
     public function createMfaURL(User $user): string
     {
-        /*$mfaKey = substr(base64_encode(mcrypt_create_iv(64, MCRYPT_DEV_URANDOM)), 0, -2) . uniqid();
+        $mfaKey = bin2hex(random_bytes(128));
         $user->setMfaKey($mfaKey);
 
         $this->em->persist($user);
@@ -24,10 +25,7 @@ class MfaService
         $base32 = new Base2n(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', FALSE, TRUE, TRUE);
         $hash = $base32->encode($mfaKey);
 
-        $url = 'otpauth://totp/' . $user->getUsername() . '?secret=' . $hash . '=&issuer=PasswordSafe';
-
-        return $url;*/
-        return "TODO";
+        return 'otpauth://totp/' . $user->getUsername() . '?secret=' . $hash . '=&issuer=PasswordSafe';
     }
 
     public function validateOTP(User $user, string $otp)
