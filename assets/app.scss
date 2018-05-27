@@ -60,12 +60,16 @@ a {
 .mdc-card--content {
   padding: 20px;
 }
-.mdc-card--login {
+.mdc-card--login, .mdc-card--first-login {
   position: relative;
   width: 300px;
   padding: 20px;
   margin: 250px auto 0;
   text-align: center;
+
+  &.mdc-card--first-login {
+    width: 600px;
+  }
 
   img {
     width: 60%;

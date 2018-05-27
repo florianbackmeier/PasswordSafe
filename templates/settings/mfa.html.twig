@@ -3,16 +3,14 @@
 {% block title %}Settings{% endblock %}
 
 {% block main %}
-  <div class="card-wide mdl-card mdl-shadow--2dp">
-    <div class="mdl-card__title">
-      <h2 class="mdl-card__title-text">Two-factor authentification</h2>
-    </div>
-    <div class="mdl-card__supporting-text">
-      <p>Scan this image with your token generator, e.g. Google Authenticator</p>
-      {{qrCode|raw}}
-    </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <a href="{{path('settings')}}" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Next</a>
+  <div class="mdc-card mdc-card--content">
+    <h2 class="mdc-typography--headline6">Two-factor authentification</h2>
+    <p>Scan this image with your token generator, e.g. Google Authenticator</p>
+    {{qrCode|raw}}
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a href="{{path('settings')}}" class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple">Next</a>
+        </div>
     </div>
   </div>
 {% endblock %}

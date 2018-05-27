@@ -93,7 +93,7 @@ class User implements UserInterface, EquatableInterface, Serializable
         return $this;
     }
 
-    public function getSafeDatabase(): SafeDatabase
+    public function getSafeDatabase()
     {
         return $this->safeDatabase;
     }

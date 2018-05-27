@@ -3723,25 +3723,27 @@ a {
 .mdc-card--content {
   padding: 20px; }
 
-.mdc-card--login {
+.mdc-card--login, .mdc-card--first-login {
   position: relative;
   width: 300px;
   padding: 20px;
   margin: 250px auto 0;
   text-align: center; }
-  .mdc-card--login img {
+  .mdc-card--login.mdc-card--first-login, .mdc-card--first-login.mdc-card--first-login {
+    width: 600px; }
+  .mdc-card--login img, .mdc-card--first-login img {
     width: 60%;
     margin: auto; }
-  .mdc-card--login .mdc-card__content--left {
+  .mdc-card--login .mdc-card__content--left, .mdc-card--first-login .mdc-card__content--left {
     text-align: left; }
-  .mdc-card--login h1 {
+  .mdc-card--login h1, .mdc-card--first-login h1 {
     color: #F44336;
     margin: 0 0 15px; }
-    .mdc-card--login h1 span {
+    .mdc-card--login h1 span, .mdc-card--first-login h1 span {
       color: #000; }
-  .mdc-card--login .mdc-button {
+  .mdc-card--login .mdc-button, .mdc-card--first-login .mdc-button {
     margin-top: 30px; }
-  .mdc-card--login::before {
+  .mdc-card--login::before, .mdc-card--first-login::before {
     content: '';
     position: absolute;
     left: 0;
@@ -3753,7 +3755,7 @@ a {
     background-size: contain;
     height: 150px; }
   @media only screen and (max-device-width: 1025px) {
-    .mdc-card--login {
+    .mdc-card--login, .mdc-card--first-login {
       margin-top: 200px; } }
 
 .mdc-card__actions {

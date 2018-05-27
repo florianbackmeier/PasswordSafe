@@ -14,10 +14,12 @@ security:
               login_path: login
               check_path: login
               success_handler: App\Security\Authentication\AuthenticationSuccessHandler
+              failure_handler: App\Security\Authentication\AuthenticationFailureHandler
             logout:
                path: logout
                target: /
 
     access_control:
          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/first_login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/, roles: ROLE_USER }

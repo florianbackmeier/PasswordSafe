@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PasswordSafe{% endblock %}
+
+{% block body %}
+  <div class="mdc-card mdc-card--first-login ">
+    <h1 class="mdc-typography mdc-typography--headline4">Password<span>Safe</span></h1>
+
+    <p>Dein Username lautet: <b>{{username}}</b></p>
+    <p>Dein Passwort lautet: <b>{{password}}</b></p>
+
+    <p>We enabled multi-factor authentication for you to enhance your security. Scan this image with your token generator, e.g. Google Authenticator</p>
+    <div class="qrCode">
+      {{qrCode|raw}}
+    </div>
+
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a href="{{path('login')}}" class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised" data-mdc-auto-init="MDCRipple">Continue</a>
+        </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {%block body%}
-
-
     <form action="{{ path('login') }}" method="post" class="mdc-card mdc-card--login">
         <h1 class="mdc-typography mdc-typography--headline4">Password<span>Safe</span></h1>
         {% if login_error %}

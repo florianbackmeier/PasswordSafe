@@ -1,5 +1,7 @@
 <ul class="mdc-list mdc-card entries">
   {% for row in db %}
     <li class="mdc-list-item">{% include '_tpl/type.html.twig'  with {'entry': row} %}</li>
+    {% else %}
+    <div class="mdc-card--content"><a class="mdc-button mdc-button--raised" href="{{ path('add', {'type': 'UsernamePassword', 'category': category | base64_encode | trim('=') }) }}">Create element</a></div>
   {% endfor %}
 </ul>
