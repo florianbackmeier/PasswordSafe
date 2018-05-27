@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ entry.name is defined ? 'Edit' : 'Add' }}{% endblock %}
+
+{% block main %}
+<div class="mdc-card form">
+    <form action="/save" method="post">
+        <nav class="mdc-tab-bar" data-mdc-auto-init="MDCTabBar">
+          <a class="mdc-tab mdc-tab--active" href="javascript:void(0);" data-panel="#form_main">Main</a>
+          <a class="mdc-tab" href="javascript:void(0);" data-panel="#form_share">Share</a>
+          <a class="mdc-tab" href="javascript:void(0);" data-panel="#form_settings">Settings</a>
+          <span class="mdc-tab-bar__indicator"></span>
+        </nav>
+        <div class="mdc-tab-panel mdc-tab-panel__active" id="form_main">
+            {% block content %}
+                <div>{% include '_elements/textfield.html.twig' with {'name': 'name', 'label': 'Name', 'value': entry.name is defined ? entry.name : ''} %}</div>
+            {% endblock %}
+        </div>
+        <div class="mdc-tab-panel mdc-tab-panel-share" id="form_share">
+            <ul>
+            {% for user in users %}
+            <li>
+                <div class="mdc-switch">
+                  <input type="checkbox" id="share{{ user.username }}" class="mdc-switch__native-control" role="switch" name="share[]" value="{{ user.username }}" {{ attribute(entry.attributes.shares, user.username) is defined ? 'checked' : '' }}>
+                  <div class="mdc-switch__background">
+                    <div class="mdc-switch__knob"></div>
+                  </div>
+                </div>
+                <label for="share{{ user.username }}">{{ user.username }}</label>
+            </li>
+            {% endfor %}
+            </ul>
+            <span class="hint">If you select many users, saving will take some time.</span>
+        </div>
+        <div class="mdc-tab-panel" id="form_settings">
+            <div class="mdc-select category-select" data-mdc-auto-init="MDCSelect">
+                <select name="category"  class="mdc-select__native-control">
+                    <option value="">Main category</option>
+                    {% for categoryItem in categories %}
+                        {% if entry.attributes.category is defined and entry.attributes.category == categoryItem or category == categoryItem %}
+                            <option selected>{{ categoryItem }}</option>
+                        {% else %}
+                            <option>{{ categoryItem }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    <option value="newCategory">New category</option>
+                </select>
+                <label class="mdc-floating-label" for="input_category_input">Category</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="category-custom" style="display: none;">
+                {% include '_elements/textfield.html.twig' with {'name': 'category_input', 'label': 'Category', 'value': ''} %}
+                <button class="mdc-button category-custom-cancel" data-mdc-auto-init="MDCRipple">Cancel</button>
+            </div>
+        </div>
+        <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons">
+
+            <a href="javascript:history.back()" class="mdc-button mdc-card__action mdc-card__action--button">Cancel</a>
+            <input type="submit" class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised"
+                   value="{{ entry.id is defined ? 'Save' : 'Add' }}"/>
+            </div>
+            {% if entry.id is defined %}
+            <div class="mdc-card__action-icons">
+                    <a href="/delete?id={{ entry.id }}&csrf_token={{ csrf_token }}" class="material-icons mdc-card__action mdc-card__action--icon" role="button" title="Delete">delete</a>
+                    <input type="hidden" name="id" value="{{ entry.id }}"/>
+            </div>
+            {% endif %}
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
+    </form>
+</div>
+{% endblock %}
+{% block js_load %}
+{{ parent() }}
+const tabBar = document.querySelector('.mdc-tab-bar');
+const tabs = tabBar.querySelectorAll('.mdc-tab');
+tabBar.MDCTabBar.listen('MDCTabBar:change', function({ detail }) {
+    const tab = tabs[detail.activeTabIndex];
+    const panel = document.querySelector(tab.dataset.panel);
+    document.querySelector('.mdc-tab-panel__active').classList.remove('mdc-tab-panel__active');
+    panel.classList.add('mdc-tab-panel__active');
+});
+const categorySelect = document.querySelector('.category-select').MDCSelect;
+categorySelect.listen('change', () => {
+    if ( categorySelect.value === 'newCategory' ) {
+        document.querySelector('.category-select').style.display = 'none';
+        document.querySelector('.category-custom').style.display = 'block';
+    }
+});
+document.querySelector('.category-custom-cancel').addEventListener('click', function(evt) {
+    evt.preventDefault();
+    document.querySelector('.category-custom').style.display = 'none';
+    document.querySelector('.category-select').style.display = 'inline-block';
+    document.querySelectorAll('.category-select option').forEach(function(option) {
+        if ( option.defaultSelected ) {
+            categorySelect.value = option.value;
+        }
+    });
+});
+{% endblock %}

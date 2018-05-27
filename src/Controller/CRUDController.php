@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\DatabaseRow;
 use App\Entity\SharedPassword;
 use App\Entity\User;
+use App\Security\DatabaseService;
 use App\Security\RSAService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,7 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CRUDController extends AbstractDatabaseController
 {
-    private $ENTITY_NAMESPACE = 'PasswordSafeBundle\Entity';
+    private $ENTITY_NAMESPACE = 'App\Entity';
+    private $RSAService;
+
+    public function __construct(DatabaseService $databaseService, RSAService $RSAService)
+    {
+        parent::__construct($databaseService);
+        $this->RSAService = $RSAService;
+    }
 
     /**
      * @Route("/get")
@@ -47,7 +55,7 @@ class CRUDController extends AbstractDatabaseController
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function formAddAction(Request $request, $type, $category)
+    public function formAddAction($type, $category)
     {
         $category = base64_decode($category . '==');
         if ($category == 'default') {
@@ -76,7 +84,7 @@ class CRUDController extends AbstractDatabaseController
 
         $users = $this->getDoctrine()->getRepository(User::class)->findBy([], ['username' => 'ASC']);
         unset($users[array_search($this->getUser(), $users)]);
-        return $this->render('PasswordSafeBundle:_types:' . $row->getType() . 'Form.html.twig', array('entry' => $row, 'categories' => $this->_getCategories(), 'category' => $row->getCategory(), 'users' => $users, 'csrf_token' => $this->generateToken()));
+        return $this->render('_types/' . $row->getType() . 'Form.html.twig', array('entry' => $row, 'categories' => $this->_getCategories(), 'category' => $row->getCategory(), 'users' => $users, 'csrf_token' => $this->generateToken()));
     }
 
     /**
@@ -192,7 +200,7 @@ class CRUDController extends AbstractDatabaseController
         $receiver = $this->getDoctrine()->getRepository(User::class)->find($username);
         $share->setReceiver($receiver);
 
-        $encryptedData = $this->get('passwordSafe.rsaService')->encrypt($row, $receiver);
+        $encryptedData = $this->RSAService->encrypt($row, $receiver);
         $share->setEncryptedData($encryptedData);
 
         $this->getDoctrine()->getManager()->persist($share);

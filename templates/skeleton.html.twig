@@ -6,7 +6,6 @@
       {% set _title = block('title') %}
       <title>{% block title %}PasswordSafe{% endblock %}</title>
       <link rel="stylesheet" href="/app.css">
-      <script src="/app.js" async></script>
       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
       <link rel="icon" href="/images/favicon.png">
@@ -15,6 +14,13 @@
     </head>
     <body>
       {% block body %}{% endblock %}
-      {% block javascripts %}{% endblock %}
+      {% block javascripts %}
+        <script src="/app.js" async></script>
+        <script>
+        window.addEventListener('load', function() {
+            {% block js_load %}{% endblock %}
+        });
+        </script>
+      {% endblock %}
     </body>
 </html>

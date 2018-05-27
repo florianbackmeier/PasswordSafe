@@ -13,7 +13,7 @@ class SettingsController extends AbstractController
 {
     /**
      * @Route("/settings", name="settings")
-     * @Template("PasswordSafeBundle:settings:overview.html.twig")
+     * @Template("settings:overview.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsAction()

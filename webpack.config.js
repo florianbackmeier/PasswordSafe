@@ -31,7 +31,9 @@ module.exports = [{
 module.exports.push({
     entry: "./assets/app.js",
     output: {
-        filename: "public/app.js"
+        filename: "public/app.js",
+        libraryTarget: 'var',
+        library: 'App'
     },
     module: {
         loaders: [{

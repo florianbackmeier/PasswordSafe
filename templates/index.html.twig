@@ -2,12 +2,7 @@
 
 {%block main%}
     {% include '_tpl/entries.html.twig' %}
-
-      <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect" for="addMenu">
-        <li class="mdl-menu__item" data-target="main" data-ajax="{{ path('add', {'type': 'Text', 'category': category | base64_encode | trim('=') }) }}">Safe note</li>
-        <li class="mdl-menu__item" data-target="main" data-ajax="{{ path('add', {'type': 'UsernamePassword', 'category': category | base64_encode | trim('=') }) }}">Username and password</li>
-      </ul>
-    <button class="mdc-fab material-icons" aria-label="Favorite">
+    <button class="new-button mdc-fab material-icons" onclick="window.location.href='{{ path('add', {'type': 'UsernamePassword', 'category': category | base64_encode | trim('=') }) }}'">
       <span class="mdc-fab__icon">
         add
       </span>

@@ -1,0 +1,8 @@
+{% set id = random(1000) %}
+{% if value is not defined  %}
+  {% set value = '' %}
+{% endif %}
+<div class="mdc-text-field mdc-text-field--textarea" data-mdc-auto-init="MDCTextField">
+  <textarea id="textarea{{id}}" class="mdc-text-field__input" rows="8" cols="40">{{value}}</textarea>
+  <label for="textarea{{id}}" class="mdc-floating-label">{{label}}</label>
+</div>
