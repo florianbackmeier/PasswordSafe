@@ -1,6 +1,6 @@
-{% extends 'PasswordSafeBundle:_tpl:typeForm.html.twig' %}
+{% extends '_tpl/typeForm.html.twig' %}
 {% block content %}
   {{ parent() }}
-  {% include 'PasswordSafeBundle:_elements:labelTextarea.html.twig' with {'name': 'value', 'label': 'Text', 'value': entry.value is defined ? entry.value : ''} %}
+  {% include '_elements/textarea.html.twig' with {'name': 'value', 'label': 'Text', 'value': entry.value is defined ? entry.value : ''} %}
   <input type="hidden" name="type" value="Text" />
 {% endblock %}

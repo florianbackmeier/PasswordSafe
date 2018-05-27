@@ -3398,6 +3398,8 @@ var _formField = __webpack_require__(79);
 
 var _checkbox = __webpack_require__(75);
 
+var _icon = __webpack_require__(57);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _autoInit2.default.register('MDCTopAppBar', _topAppBar.MDCTopAppBar);
@@ -3410,6 +3412,7 @@ _autoInit2.default.register('MDCTab', _tabs.MDCTab);
 _autoInit2.default.register('MDCTabBar', _tabs.MDCTabBar);
 _autoInit2.default.register('MDCSelect', _select.MDCSelect);
 _autoInit2.default.register('MDCTextFieldHelperText', _helperText.MDCTextFieldHelperText);
+_autoInit2.default.register('MDCTextFieldIcon', _icon.MDCTextFieldIcon);
 _autoInit2.default.register('MDCFormField', _formField.MDCFormField);
 _autoInit2.default.register('MDCCheckbox', _checkbox.MDCCheckbox);
 

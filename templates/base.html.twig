@@ -8,6 +8,10 @@
       <span class="mdc-top-app-bar__title">{{block('title')}}</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+        <form method="post" action="/search" class="mdc-text-field mdc-text-field--dense mdc-text-field--search mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+          <i class="material-icons mdc-text-field__icon" role="button" data-mdc-auto-init="MDCTextFieldIcon">search</i>
+          <input type="text" name="search" id="search" class="mdc-text-field__input" autocomplete="off">
+        </form>
       <a href="{{ path('logout') }}" class="material-icons mdc-top-app-bar__action-item" aria-label="Logout" alt="Logout">exit_to_app</a>
     </section>
   </div>

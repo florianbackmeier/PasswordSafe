@@ -11,6 +11,7 @@ import {MDCSelect} from '@material/select';
 import clipboard from 'clipboard-copy';
 import {MDCFormField} from '@material/form-field';
 import {MDCCheckbox} from '@material/checkbox';
+import {MDCTextFieldIcon} from '@material/textfield/icon';
 
 mdcAutoInit.register('MDCTopAppBar', MDCTopAppBar);
 mdcAutoInit.register('MDCTemporaryDrawer', MDCTemporaryDrawer);
@@ -22,6 +23,7 @@ mdcAutoInit.register('MDCTab', MDCTab);
 mdcAutoInit.register('MDCTabBar', MDCTabBar);
 mdcAutoInit.register('MDCSelect', MDCSelect);
 mdcAutoInit.register('MDCTextFieldHelperText', MDCTextFieldHelperText);
+mdcAutoInit.register('MDCTextFieldIcon', MDCTextFieldIcon);
 mdcAutoInit.register('MDCFormField', MDCFormField);
 mdcAutoInit.register('MDCCheckbox', MDCCheckbox);
 

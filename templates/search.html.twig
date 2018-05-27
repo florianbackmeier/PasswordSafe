@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Search{% endblock %}
+
+{% block main %}
+
+      {% if db is empty %}
+          <div class="mdc-card mdc-card--content">
+            <p>No results available.</p>
+            <br /><br /><br />
+            <div><a class="mdc-button" href="/" data-mdc-auto-init="MDCRipple">Back</a></div>
+          </div>
+      {% else %}
+        {% include '_tpl/entries.html.twig' %}</li>
+      {% endif %}
+  </div>
+{% endblock %}

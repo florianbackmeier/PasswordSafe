@@ -16,6 +16,7 @@ $borderColor: rgba(0, 0, 0, .1);
 @import "@material/snackbar/mdc-snackbar";
 @import "@material/textfield/mdc-text-field";
 @import "@material/textfield/helper-text/mdc-text-field-helper-text";
+@import "@material/textfield/icon/mdc-text-field-icon";
 @import "@material/tabs/mdc-tabs";
 @import "@material/switch/mdc-switch";
 @import "@material/select/mdc-select";
@@ -124,12 +125,32 @@ a {
 .mdc-form-field {
   margin-left: -11px;
 }
-.mdc-top-app-bar .mdc-top-app-bar__navigation-icon {
-  display: none;
+.mdc-top-app-bar {
+  .mdc-text-field--search {
+    @include mdc-text-field-bottom-line-color(#fff);
+    @include mdc-text-field-ink-color(#fff);
+    @include mdc-text-field-label-color(#fff);
+    @include mdc-text-field-icon-color(#fff);
+
+    height: 30px !important;
+    margin-top: 0 !important;
+
+    &.mdc-text-field--with-leading-icon.mdc-text-field--dense .mdc-text-field__icon {
+      bottom: 5px;
+    }
+    input {
+      padding-top: 0;
+    }
+  }
+
+  .mdc-top-app-bar__navigation-icon {
+    display: none;
+  }
+  .mdc-top-app-bar__title {
+    padding-left: 0;
+  }
 }
-.mdc-top-app-bar .mdc-top-app-bar__title {
-  padding-left: 0px;
-}
+
 @media (max-width: 1320px) {
   .mdc-drawer.mdc-drawer--temporary {
     display: block;
