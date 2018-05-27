@@ -3,6 +3,6 @@
   {% set value = '' %}
 {% endif %}
 <div class="mdc-text-field mdc-text-field--textarea" data-mdc-auto-init="MDCTextField">
-  <textarea id="textarea{{id}}" class="mdc-text-field__input" rows="8" cols="40">{{value}}</textarea>
+  <textarea id="textarea{{id}}" class="mdc-text-field__input" rows="8" cols="40" name="{{name}}">{{value}}</textarea>
   <label for="textarea{{id}}" class="mdc-floating-label">{{label}}</label>
 </div>

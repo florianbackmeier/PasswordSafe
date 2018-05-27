@@ -57,6 +57,17 @@ a {
   }
 }
 
+.loading-spinner {
+  position: relative;
+  height: 24px;
+
+  i {
+    position: absolute;
+    animation: spin 4s linear infinite;
+  }
+}
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 .mdc-card--content {
   padding: 20px;
 }
@@ -194,9 +205,22 @@ body > .page {
   right: 1rem;
 }
 
-.entries {
+.mdc-card--empty-search {
   max-width: 600px;
   margin: auto;
+  padding: 20px;
+}
+
+.mdc-card--entries {
+  max-width: 600px;
+  margin: 0 auto 30px;
+
+  h2 {
+    padding: 0 0 0 20px;
+  }
+  .loading-spinner {
+    padding: 0 0 30px 20px;
+  }
 
   li a {
     color: #000;

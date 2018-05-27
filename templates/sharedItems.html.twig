@@ -2,7 +2,7 @@
 
 {% block main %}
     {% for user,items in sortedItems %}
-        <ul class="mdc-list mdc-card entries">
+        <ul class="mdc-list mdc-card mdc-card--entries">
             <li class="mdc-list-item"><h2 class="mdc-typograpy mdc-typography--headline6">Shared Passwords from {{ user }}</h2></li>
             {% for row in items %}
                 <li class="mdc-list-item">{% include '_tpl/type.html.twig'  with {'entry': row} %}</li>

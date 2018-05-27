@@ -2,9 +2,8 @@
 {% block title %}Search{% endblock %}
 
 {% block main %}
-
       {% if db is empty %}
-          <div class="mdc-card mdc-card--content">
+          <div class="mdc-card mdc-card--empty-search">
             <p>No results available.</p>
             <br /><br /><br />
             <div><a class="mdc-button" href="/" data-mdc-auto-init="MDCRipple">Back</a></div>
@@ -12,5 +11,26 @@
       {% else %}
         {% include '_tpl/entries.html.twig' %}</li>
       {% endif %}
-  </div>
+      <div class="mdc-card mdc-card--entries search-shared">
+          <h2 class="mdc-typography--headline6">Searching for shared items</h2>
+          <div class="loading-spinner"><i class="material-icons">autorenew</i></div>
+      </div>
+{% endblock %}
+{% block js_load %}
+var formData = new FormData();
+
+formData.append('search', '{{searchKey}}');
+fetch('/search_shared', {method: 'POST', body: formData, credentials: 'include'  })
+  .then(function(response) {
+    response.text().then(html => {
+        let shared = document.querySelector('.search-shared');
+        shared.querySelector('h2').innerText = 'Shared Items';
+        shared.querySelector('.loading-spinner').remove();
+        let container = document.createElement("div");
+        container.innerHTML = html;
+        shared.appendChild(container);
+        container.querySelector('ul').classList.remove('mdc-card');
+        container.querySelector('ul').classList.remove('mdc-card--entries');
+    });
+  });
 {% endblock %}

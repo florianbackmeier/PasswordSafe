@@ -1,0 +1,8 @@
+{% if db is empty %}
+  <div class="mdc-card mdc-card--empty-search">
+    <p>No results available.</p>
+  </div>
+{% else %}
+    {% include '_tpl/entries.html.twig' %}
+{% endif %}
+
