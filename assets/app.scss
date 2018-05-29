@@ -68,9 +68,6 @@ a {
 }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
-.mdc-card--content {
-  padding: 20px;
-}
 .mdc-card--login, .mdc-card--first-login {
   position: relative;
   width: 300px;
@@ -119,6 +116,15 @@ a {
   @media only screen and (max-device-width: 1025px) {
     margin-top: 200px;
   }
+}
+
+.mdc-card--content {
+  padding: 20px;
+}
+.mdc-card--normal {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
 }
 
 .mdc-card__actions {
@@ -234,6 +240,11 @@ body > .page {
   &.mdc-list li h2 {
     margin: 0;
   }
+}
+.mdc-card-after-action {
+  max-width: 600px;
+  margin: auto;
+  text-align: right;
 }
 
 .entry {

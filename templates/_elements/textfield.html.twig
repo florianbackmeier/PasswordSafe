@@ -12,7 +12,7 @@
   {% set error = errors[name] %}
 {% endif %}
 <div class="mdc-text-field {% if error is defined %}mdc-text-field__error{% endif %}" data-mdc-auto-init="MDCTextField">
-  <input type="{{type}}" id="textfield{{id}}" class="mdc-text-field__input" name="{{name}}" value="{{value}}" {{attr}}>
+  <input type="{{type}}" id="textfield{{id}}" class="mdc-text-field__input" name="{{name}}" value="{{value}}" {{attr|raw}}>
   <label class="mdc-floating-label" for="textfield{{id}}">{{label}}</label>
   <div class="mdc-line-ripple"></div>
 </div>

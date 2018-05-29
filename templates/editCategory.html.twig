@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit category{% endblock %}
+
+{% block main %}
+  <form method="post" action="{{ path('updateCategory') }}" class="mdc-card mdc-card--normal">
+    <h2 class="mdc-typography--headline6">Edit category {{category}}</h2>
+    <div>{% include '_elements/textfield.html.twig' with {'name': 'category', 'label': 'New category name', 'value': category, 'attr': 'required'} %}</div>
+
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button" href="{{ path('category', {'categorySlug': category | base64_encode | trim('=') }) }}" data-mdc-auto-init="MDCRipple">Back</a>
+            <input type="submit" class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised" value="Save" />
+        </div>
+    </div>
+
+    <input type="hidden" name="categorySlug" value="{{category | base64_encode | trim('=')}}" />
+  </form>
+{% endblock %}

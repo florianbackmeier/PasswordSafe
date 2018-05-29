@@ -49,7 +49,7 @@
                 <div class="mdc-line-ripple"></div>
             </div>
             <div class="category-custom" style="display: none;">
-                {% include '_elements/textfield.html.twig' with {'name': 'category_input', 'label': 'Category', 'value': ''} %}
+                {% include '_elements/textfield.html.twig' with {'name': 'category_input', 'label': 'Category', 'value': '', attr: 'autocomplete="off"'} %}
                 <button class="mdc-button category-custom-cancel" data-mdc-auto-init="MDCRipple">Cancel</button>
             </div>
         </div>

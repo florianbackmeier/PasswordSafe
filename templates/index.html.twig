@@ -2,6 +2,11 @@
 
 {%block main%}
     {% include '_tpl/entries.html.twig' %}
+    {% if category != 'default' %}
+        <div class="mdc-card-after-action">
+            <a class="mdc-button" href="{{ path('editCategory', {'categorySlug': category | base64_encode | trim('=') }) }}">Edit category</a>
+        </div>
+    {% endif %}
     <button class="new-button mdc-fab material-icons" onclick="window.location.href='{{ path('add', {'type': 'UsernamePassword', 'category': category | base64_encode | trim('=') }) }}'">
       <span class="mdc-fab__icon">
         add
