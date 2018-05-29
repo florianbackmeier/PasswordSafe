@@ -1,11 +1,11 @@
 {% set id = random(1000) %}
-{% set value = '' %}
+{% set checkedValue = '' %}
 {% if checked is defined  %}
-  {% set value = 'checked="checked"' %}
+  {% set checkedValue = 'checked="checked"' %}
 {% endif %}
 <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
   <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-    <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox{{id}}" name="{{name}}" {{value}} />
+    <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox{{id}}" name="{{name}}" value="{{value}}" {{checkedValue}} />
     <div class="mdc-checkbox__background">
       <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
         <path class="mdc-checkbox__checkmark-path" fill="none" stroke="white" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
