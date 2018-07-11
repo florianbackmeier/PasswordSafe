@@ -2,7 +2,7 @@ image: alpine:3.8
 
 before_script: 
   - apk update
-  - apk install nodejs npm
+  - apk add nodejs npm
   - apk add wget curl git php7 php7-curl php7-openssl php7-json php7-phar php7-dom
   - apk add php7-mbstring php7-iconv php7-pdo php7-pdo_mysql php7-xml php7-ctype php7-simplexml php7-tokenizer
   - apk add python2 make g++ openssh-client sshpass
