@@ -1,0 +1,28 @@
+image: node:10.5.0-alpine
+
+before_script:
+  - apk update
+  - apk add wget curl git php7 php7-curl php7-openssl php7-json php7-phar php7-dom
+  - apk add php7-mbstring php7-iconv php7-pdo php7-pdo_mysql php7-xml php7-ctype php7-simplexml php7-tokenizer
+  - apk add python2 make g++ openssh-client sshpass
+  - apk add coreutils # contains better date
+  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+release_job:
+    only:
+      - master
+    script:
+      - composer install
+      - npm install
+      - npm run build
+
+      - mv .env.dist .env
+      - sed -i -e "s/APP_ENV=.*/APP_ENV=prod/g" .env
+      - sed -i -e "s/APP_SECRET=.*/APP_SECRET=${APP_SECRET}/g" .env
+      - sed -i -e "s#DATABASE_URL=.*#DATABASE_URL=${DATABASE_URL}#g" .env
+      - php bin/console doctrine:migrations:migrate --no-interaction
+
+      - NEW_UUID=$(date +%y%m%d%H%M%S)
+      - echo -e "-rename app old_${NEW_UUID}\nmkdir app" > /tmp/sftp
+      - sshpass -p "${PASSWORD}" sftp -oBatchMode=no -o "StrictHostKeyChecking no" -P 2222 -b /tmp/sftp ${USER}@florianbackmeier.de
+      - sshpass -p "${PASSWORD}" scp -P 2222 -r . ${USER}@florianbackmeier.de:/app/
