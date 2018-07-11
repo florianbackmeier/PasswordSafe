@@ -14,7 +14,8 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "start": "webpack --watch"
+        "start": "webpack --watch",
+        "build": "webpack"
     },
     "dependencies": {
         "@material/auto-init": "^0.35.0",
