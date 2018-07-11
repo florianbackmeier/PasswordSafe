@@ -21,7 +21,7 @@ release_job:
       - sed -i -e "s/APP_ENV=.*/APP_ENV=prod/g" .env
       - sed -i -e "s/APP_SECRET=.*/APP_SECRET=${APP_SECRET}/g" .env
       - sed -i -e "s#DATABASE_URL=.*#DATABASE_URL=${DATABASE_URL}#g" .env
-      - php bin/console doctrine:migrations:migrate --no-interaction
+      - php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
       - NEW_UUID=$(date +%y%m%d%H%M%S)
       - echo -e "-rename app old_${NEW_UUID}\nmkdir app" > /tmp/sftp
