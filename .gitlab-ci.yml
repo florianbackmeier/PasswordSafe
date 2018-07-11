@@ -25,5 +25,5 @@ release_job:
 
       - NEW_UUID=$(date +%y%m%d%H%M%S)
       - echo -e "-rename app old_${NEW_UUID}\nmkdir app" > /tmp/sftp
-      - sshpass -p "${PASSWORD}" sftp -oBatchMode=no -o "StrictHostKeyChecking no" -P 2222 -b /tmp/sftp ${USER}@florianbackmeier.de
-      - sshpass -p "${PASSWORD}" scp -P 2222 -r . ${USER}@florianbackmeier.de:/app/
+      - sshpass -p "${SFTP_PASSWORD}" sftp -oBatchMode=no -o "StrictHostKeyChecking no" -P 2222 -b /tmp/sftp ${SFTP_USER}@florianbackmeier.de
+      - sshpass -p "${SFTP_PASSWORD}" scp -P 2222 -r . ${SFTP_USER}@florianbackmeier.de:/app/
