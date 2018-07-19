@@ -6,8 +6,8 @@
         {% if login_error %}
             <div class="error">{{ login_error.messageKey|trans(login_error.messageData, 'security') }}</div>
         {% endif %}
-        {% include '_elements/textfield.html.twig' with {'name': '_username', 'label': 'Username', 'value': last_username, 'attr': 'autofocus="true"'} %}
-        {% include '_elements/textfield.html.twig' with {'name': '_password', 'label': 'Password', 'value': '', type: 'password'} %}
+        {% include '_elements/textfield.html.twig' with {'name': 'ps_user', 'label': 'Username', 'value': last_username, 'attr': 'autofocus="true"'} %}
+        {% include '_elements/textfield.html.twig' with {'name': 'ps_pass', 'label': 'Password', 'value': '', type: 'password'} %}
         {% include '_elements/textfield.html.twig' with {'name': 'mfaCode', 'label': '2-Step Authentication Code', 'value': '', type: 'number', attr: 'autocomplete="off"'} %}
         <div class="mdc-card__content--left">{% include '_elements/checkbox.html.twig' with {'name': 'deviceType', value: 'secure', 'label': 'Secure Device'} %}</div>
 

@@ -10,6 +10,8 @@ security:
               authenticator: App\Security\Authentication\SafeAuthenticator
               login_path: login
               check_path: login
+              username_parameter: ps_user
+              password_parameter: ps_pass
               success_handler: App\Security\Authentication\AuthenticationSuccessHandler
               failure_handler: App\Security\Authentication\AuthenticationFailureHandler
             logout:

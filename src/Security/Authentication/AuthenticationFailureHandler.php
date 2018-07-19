@@ -19,7 +19,7 @@ class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterf
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($exception instanceof InitializationException) {
-            $username = $request->request->get('_username');
+            $username = $request->request->get('ps_user');
             return new RedirectResponse($this->router->generate('first_login', array('username' => $username)));
         }
         $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
