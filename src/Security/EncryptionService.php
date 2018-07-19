@@ -25,10 +25,8 @@ class EncryptionService
         $data = $db->getData();
         if ( substr( $data, 0, 2 ) == '2:' ) {
             return $this->decrypt_sodium($key, $data);
-        } else {
-            return $this->decrypt_mcryptAES256($key, $data);
         }
-
+        return null;
     }
 
     // V2
@@ -49,30 +47,6 @@ class EncryptionService
         $ciphertext = substr($data, $posNonceDelimiter+1);
 
         $plaintext = sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
-        return $this->extractData($plaintext);
-    }
-
-    // V1
-    // AES256 with mcrypt
-    public function encrypt_mcryptAES256($key, $data)
-    {
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_DEV_URANDOM);
-        $crypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $this->prepareData($data), MCRYPT_MODE_CBC, $iv);
-        $ciphertext = $iv . $crypttext;
-
-        return $ciphertext;
-    }
-
-    // V1
-    // AES256 with mcrypt
-    public function decrypt_mcryptAES256($key, $data)
-    {
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = substr($data, 0, $iv_size);
-        $ciphertext = substr($data, $iv_size);
-
-        $plaintext = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $ciphertext, MCRYPT_MODE_CBC, $iv);
         return $this->extractData($plaintext);
     }
 
