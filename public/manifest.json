@@ -1,0 +1,16 @@
+{
+  "name": "PasswordSafe",
+  "short_name": "PasswordSafe",
+  "icons": [
+    {
+      "src": "/images/launcher-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#F44336",
+  "theme_color": "#F44336",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
