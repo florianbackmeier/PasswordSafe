@@ -2,8 +2,7 @@
 namespace App\Controller;
 
 use App\Service\CategoryService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +24,7 @@ class ExtraController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/updateCategory", name="updateCategory")
-     * @Method({"POST"})
+     * @Route("/updateCategory", name="updateCategory", methods={"POST"})
      * @Security("has_role('ROLE_USER')")
      */
     public function readAction(Request $request, CategoryService $categoryService)

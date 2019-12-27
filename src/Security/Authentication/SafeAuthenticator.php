@@ -4,75 +4,116 @@ namespace App\Security\Authentication;
 use App\Security\DatabaseService;
 use App\Security\EncryptionService;
 use App\Security\Exceptions\InitializationException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Authentication\SimpleFormAuthenticatorInterface;
+use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Guard\AuthenticatorInterface;
+use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
-class SafeAuthenticator implements SimpleFormAuthenticatorInterface
+class SafeAuthenticator implements AuthenticatorInterface
 {
+    private $router;
     private $encryptionService;
     private $databaseService;
     private $mfaService;
     private $session;
 
-    public function __construct(EncryptionService $encryptionService, DatabaseService $databaseService, MfaService $mfaService, SessionInterface $session)
+    public function __construct(RouterInterface $router, EncryptionService $encryptionService, DatabaseService $databaseService, MfaService $mfaService, SessionInterface $session)
     {
+        $this->router = $router;
         $this->encryptionService = $encryptionService;
         $this->databaseService = $databaseService;
         $this->mfaService = $mfaService;
         $this->session = $session;
     }
 
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
+    public function start(Request $request, AuthenticationException $authException = null)
     {
-        if ( !$userProvider instanceof UserProvider ) {
-            throw new AuthenticationException('Wrong userprovider supplied.');
-        }
-        if ( !$token instanceof UsernameKeyToken ) {
-            throw new AuthenticationException('Wrong token supplied.');
-        }
-        try {
-            $user = $userProvider->loadUserByUsername($token->getUsername());
-        } catch (UsernameNotFoundException $e) {
-            throw new AuthenticationException('Invalid username or password or authentication code');
-        }
+        return new RedirectResponse('/login');
+    }
 
+    public function supports(Request $request)
+    {
+        return $request->attributes->get('_route') === 'login' && $request->isMethod('POST');
+    }
+
+    public function getCredentials(Request $request)
+    {
+        return [
+            'username' => $request->request->get('ps_user'),
+            'password' => $request->request->get('ps_pass'),
+            'mfaCode' => $request->request->get('mfaCode'),
+        ];
+    }
+
+    public function getUser($credentials, UserProviderInterface $userProvider)
+    {
+        return $userProvider->loadUserByUsername($credentials['username']);
+    }
+
+    public function checkCredentials($credentials, UserInterface $user)
+    {
         if ($user->getSafeDatabase() == null) {
             throw new InitializationException('Please initialize your account.');
         }
 
-        $key = $this->encryptionService->generateKey($token->getCredentials(), $user->getSafeDatabase()->getSalt(), $user->getSafeDatabase()->getKeyIterations());
-        if ($this->encryptionService->isValidKey($key, $user->getSafeDatabase()) && $this->mfaService->validateOTP($user, $token->getMfaCode())) {
-            $userToken = new UsernameKeyToken($user, $key, $providerKey, $user->getRoles());
-            if ($token->getDeviceType() == DeviceType::SECURE) {
-                $this->session->set('EXPIRES', time() + 240 * 60);
-                $userToken->setDeviceType(DeviceType::SECURE);
-            } else {
-                $this->session->set('EXPIRES', time() + 30 * 60);
-            }
-            return $userToken;
-        }
+        $key = $this->encryptionService->generateKey($credentials['password'], $user->getSafeDatabase()->getSalt(), $user->getSafeDatabase()->getKeyIterations());
+        $validPassword = $this->encryptionService->isValidKey($key, $user->getSafeDatabase());
+        $validOTP = $this->mfaService->validateOTP($user, $credentials['mfaCode']);
 
-        throw new AuthenticationException('Invalid username or password or authentication code');
+        $user->setCredentials($key);
+
+        return $validPassword && $validOTP;
     }
 
-    public function supportsToken(TokenInterface $token, $providerKey): bool
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return $token instanceof UsernameKeyToken
-        && $token->getProviderKey() === $providerKey;
+        if ($exception instanceof InitializationException) {
+            $username = $request->request->get('ps_user');
+            return new RedirectResponse($this->router->generate('first_login', array('username' => $username)));
+        }
+        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+        return new RedirectResponse($this->router->generate('login'));
     }
 
-    public function createToken(Request $request, $username, $password, $providerKey): UsernameKeyToken
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $token = new UsernameKeyToken($username, $password, $providerKey);
-        $token->setMfaCode($request->request->get('mfaCode'));
-        if ($request->request->get('deviceType') == DeviceType::SECURE) {
-            $token->setDeviceType(DeviceType::SECURE);
+        $meta = $this->databaseService->getMeta($token);
+        $startCategory = $meta->get('startCategory');
+        if (!empty($startCategory)) {
+            return new RedirectResponse($this->router->generate('category', array('categorySlug' => $this->categoryService->generateUrlSlug($startCategory))));
+        } else {
+            return new RedirectResponse($this->router->generate('home'));
         }
-        return $token;
+    }
+
+    public function createAuthenticatedToken(UserInterface $user, $providerKey)
+    {
+        $key = $user->getCredentials();
+        $user->eraseCredentials();
+        return new UsernameKeyToken($user, $key, $providerKey, $user->getRoles());
+    }
+
+    public function supportsRememberMe()
+    {
+
+        /*if ($token->getDeviceType() == DeviceType::SECURE) {
+            $this->session->set('EXPIRES', time() + 240 * 60);
+            $userToken->setDeviceType(DeviceType::SECURE);
+        } else {
+            $this->session->set('EXPIRES', time() + 30 * 60);
+        }*/
+        // TODO: Implement supportsRememberMe() method.
     }
 }

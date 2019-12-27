@@ -1,5 +1,5 @@
 <?php
-namespace App\Security;
+namespace App\Security\Authentication;
 
 use App\Security\Authentication\DeviceType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,7 +28,7 @@ class SessionListener implements EventSubscriberInterface
         if (!$this->securityChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return;
         }
-        if (!$this->session->has('EXPIRES') || $this->session->get('EXPIRES') < time()) {
+        /*if (!$this->session->has('EXPIRES') || $this->session->get('EXPIRES') < time()) {
             $this->tokenStorage->setToken(null, null);
             $this->session->invalidate();
             $event->setController(function () {
@@ -40,7 +40,7 @@ class SessionListener implements EventSubscriberInterface
             $this->session->set('EXPIRES', time() + 240 * 60);
         } else {
             $this->session->set('EXPIRES', time() + 30 * 60);
-        }
+        }*/
     }
 
     public static function getSubscribedEvents()

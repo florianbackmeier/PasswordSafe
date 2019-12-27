@@ -7,8 +7,7 @@ use App\Security\EncryptionService;
 use App\Security\RSAService;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +25,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/settings/password", name="settingsPassword")
-     * @Method({"GET"})
+     * @Route("/settings/password", name="settingsPassword", methods={"GET"})
      * @Template("settings/password.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
@@ -39,8 +37,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/settings/password")
-     * @Method({"POST"})
+     * @Route("/settings/password", methods={"POST"})
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsPasswordActionPost(Request $request, EncryptionService $encryptionService)
@@ -98,8 +95,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/settings/mfa", name="settingsMFA")
-     * @Method({"GET"})
+     * @Route("/settings/mfa", name="settingsMFA", methods={"GET"})
      * @Template("settings/mfa.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
@@ -118,8 +114,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/settings/rsaKeys", name="settingsRegenerateKeys")
-     * @Method({"GET"})
+     * @Route("/settings/rsaKeys", name="settingsRegenerateKeys", methods={"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsRSA(RSAService $RSAService)
@@ -130,8 +125,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/settings/personalization", name="settingsPersonalization")
-     * @Method({"GET"})
+     * @Route("/settings/personalization", name="settingsPersonalization", methods={"GET"})
      * @Template("settings/personalization.html.twig")
      * @Security("has_role('ROLE_USER')")
      */
@@ -143,8 +137,7 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/settings/personalization")
-     * @Method({"POST"})
+     * @Route("/settings/personalization", methods={"POST"})
      * @Security("has_role('ROLE_USER')")
      */
     public function settingsPersonalizationActionPost(Request $request)

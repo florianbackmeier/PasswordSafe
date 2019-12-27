@@ -4,7 +4,7 @@
     <form action="{{ path('login') }}" method="post" class="mdc-card mdc-card--login">
         <h1 class="mdc-typography mdc-typography--headline4">Password<span>Safe</span></h1>
         {% if login_error %}
-            <div class="error">{{ login_error.messageKey|trans(login_error.messageData, 'security') }}</div>
+            <div class="error">Login failed.</div>
         {% endif %}
         {% include '_elements/textfield.html.twig' with {'name': 'ps_user', 'label': 'Username', 'value': last_username, 'attr': 'autofocus="true"'} %}
         {% include '_elements/textfield.html.twig' with {'name': 'ps_pass', 'label': 'Password', 'value': '', type: 'password'} %}

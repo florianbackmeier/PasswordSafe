@@ -2,11 +2,11 @@
 namespace App\Controller;
 
 use App\Security\DatabaseService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
 
-class AbstractController extends Controller
+class AbstractController extends SymfonyController
 {
 
     protected $databaseService;

@@ -1,22 +1,17 @@
 security:
     providers:
-      webservice:
+      userProvider:
         id: App\Security\Authentication\UserProvider
 
     firewalls:
         main:
-            anonymous: ~
-            simple_form:
-              authenticator: App\Security\Authentication\SafeAuthenticator
-              login_path: login
-              check_path: login
-              username_parameter: ps_user
-              password_parameter: ps_pass
-              success_handler: App\Security\Authentication\AuthenticationSuccessHandler
-              failure_handler: App\Security\Authentication\AuthenticationFailureHandler
-            logout:
-               path: logout
-               target: /
+          anonymous: ~
+          guard:
+            authenticators:
+            - App\Security\Authentication\SafeAuthenticator
+          logout:
+             path: logout
+             target: /
 
     access_control:
          - { path: ^/(_(profiler|wdt)|css|images|js)/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

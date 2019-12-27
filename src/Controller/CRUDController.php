@@ -6,8 +6,7 @@ use App\Entity\SharedPassword;
 use App\Entity\User;
 use App\Security\DatabaseService;
 use App\Security\RSAService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,8 +22,7 @@ class CRUDController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/get")
-     * @Method({"GET"})
+     * @Route("/get", methods={"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function readAction(Request $request)
@@ -38,8 +36,7 @@ class CRUDController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/getSharedItem")
-     * @Method({"GET"})
+     * @Route("/getSharedItem", methods={"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function getSharedItem(Request $request, RSAService $RSAService)
@@ -51,8 +48,7 @@ class CRUDController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/add/{type}/{category}", name="add")
-     * @Method({"GET"})
+     * @Route("/add/{type}/{category}", name="add", methods={"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function formAddAction($type, $category)
@@ -70,8 +66,7 @@ class CRUDController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/edit")
-     * @Method({"GET"})
+     * @Route("/edit", methods={"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function formEditAction(Request $request)
@@ -88,8 +83,7 @@ class CRUDController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/delete")
-     * @Method({"GET"})
+     * @Route("/delete", methods={"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function deleteAction(Request $request)
@@ -111,8 +105,7 @@ class CRUDController extends AbstractDatabaseController
     }
 
     /**
-     * @Route("/save")
-     * @Method({"POST"})
+     * @Route("/save", methods={"POST"})
      * @Security("has_role('ROLE_USER')")
      */
     public function saveAction(Request $request)

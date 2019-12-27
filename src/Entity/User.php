@@ -34,6 +34,11 @@ class User implements UserInterface, EquatableInterface, Serializable
      */
     private $publicKey;
 
+    /**
+     * @var transient for creating user token
+     */
+    private $credentials;
+
 
     public function getUsername(): string
     {
@@ -57,6 +62,7 @@ class User implements UserInterface, EquatableInterface, Serializable
 
     public function eraseCredentials(): void
     {
+        $this->credentials = null;
     }
 
     public function isEqualTo(UserInterface $user): bool
@@ -120,5 +126,12 @@ class User implements UserInterface, EquatableInterface, Serializable
     public function getPublicKey(): string
     {
         return $this->publicKey;
+    }
+
+    public function setCredentials($credentials) {
+        $this->credentials = $credentials;
+    }
+    public function getCredentials() {
+        return $this->credentials;
     }
 }

@@ -1,45 +1,32 @@
 <?php
 namespace App\Security\Authentication;
 
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
-class UsernameKeyToken extends UsernamePasswordToken
+class UsernameKeyToken extends PostAuthenticationGuardToken
 {
-    private $mfaCode;
-    private $deviceType;
+    private $key;
 
-    public function setMfaCode($code): void
+    public function __construct(UserInterface $user, string $key, string $providerKey, array $roles)
     {
-        $this->mfaCode = $code;
+        parent::__construct($user, $providerKey, $roles);
+
+        $this->key = $key;
     }
 
-    public function getMfaCode(): string
-    {
-        return $this->mfaCode;
-    }
-
-    public function setDeviceType($deviceType): void
-    {
-        $this->deviceType = $deviceType;
-    }
-
-    public function getDeviceType()
-    {
-        return $this->deviceType;
-    }
-
-    public function eraseCredentials(): void
-    {
+    public function getCredentials() {
+        return $this->key;
     }
 
     public function serialize(): string
     {
-        return serialize(array($this->deviceType, parent::serialize()));
+        return serialize(array($this->key, parent::serialize()));
     }
 
     public function unserialize($serialized)
     {
-        list($this->deviceType, $parentStr) = unserialize($serialized);
+        list($this->key, $parentStr) = unserialize($serialized);
         parent::unserialize($parentStr);
     }
 }
