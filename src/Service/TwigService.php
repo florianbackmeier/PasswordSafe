@@ -1,11 +1,10 @@
 <?php
 namespace App\Service;
 
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig_Environment;
-use Twig_Extension;
 
-class TwigService extends Twig_Extension
+class TwigService extends AbstractExtension
 {
     private $categoryService;
 
@@ -35,13 +34,5 @@ class TwigService extends Twig_Extension
     public function getName()
     {
         return 'twigService';
-    }
-
-    public function initRuntime(Twig_Environment $environment)
-    {
-    }
-
-    public function getGlobals()
-    {
     }
 }

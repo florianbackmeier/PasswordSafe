@@ -19,14 +19,16 @@ class UsernameKeyToken extends PostAuthenticationGuardToken
         return $this->key;
     }
 
-    public function serialize(): string
+    public function __serialize(): array
     {
-        return serialize(array($this->key, parent::serialize()));
+        $array = parent::__serialize();
+        array_push($array, $this->key);
+        return $array;
     }
 
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        list($this->key, $parentStr) = unserialize($serialized);
-        parent::unserialize($parentStr);
+        $this->key = array_pop($data);
+        parent::__unserialize($data);
     }
 }
