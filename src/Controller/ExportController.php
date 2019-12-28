@@ -11,7 +11,7 @@ class ExportController extends AbstractController
 {
     /**
      * @Route("/export", name="export")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function exportAction(Request $request)
     {

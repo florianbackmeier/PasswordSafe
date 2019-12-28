@@ -12,7 +12,7 @@ class ExtraController extends AbstractDatabaseController
     /**
      * @Route("/editCategory/{categorySlug}", name="editCategory")
      * @Template("editCategory.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function editCategoryAction($categorySlug, CategoryService $categoryService)
     {
@@ -25,7 +25,7 @@ class ExtraController extends AbstractDatabaseController
 
     /**
      * @Route("/updateCategory", name="updateCategory", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function readAction(Request $request, CategoryService $categoryService)
     {

@@ -17,7 +17,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings", name="settings")
      * @Template("settings/overview.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsAction()
     {
@@ -27,7 +27,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/password", name="settingsPassword", methods={"GET"})
      * @Template("settings/password.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsPasswordAction()
     {
@@ -38,7 +38,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/password", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsPasswordActionPost(Request $request, EncryptionService $encryptionService)
     {
@@ -97,7 +97,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/mfa", name="settingsMFA", methods={"GET"})
      * @Template("settings/mfa.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsMFA(MfaService $mfaService)
     {
@@ -115,7 +115,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/rsaKeys", name="settingsRegenerateKeys", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsRSA(RSAService $RSAService)
     {
@@ -127,7 +127,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/personalization", name="settingsPersonalization", methods={"GET"})
      * @Template("settings/personalization.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsPersonalizationAction()
     {
@@ -138,7 +138,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/settings/personalization", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function settingsPersonalizationActionPost(Request $request)
     {

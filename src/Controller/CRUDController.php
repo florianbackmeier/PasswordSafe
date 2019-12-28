@@ -23,7 +23,7 @@ class CRUDController extends AbstractDatabaseController
 
     /**
      * @Route("/get", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function readAction(Request $request)
     {
@@ -37,7 +37,7 @@ class CRUDController extends AbstractDatabaseController
 
     /**
      * @Route("/getSharedItem", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function getSharedItem(Request $request, RSAService $RSAService)
     {
@@ -49,7 +49,7 @@ class CRUDController extends AbstractDatabaseController
 
     /**
      * @Route("/add/{type}/{category}", name="add", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function formAddAction($type, $category)
     {
@@ -67,7 +67,7 @@ class CRUDController extends AbstractDatabaseController
 
     /**
      * @Route("/edit", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function formEditAction(Request $request)
     {
@@ -84,7 +84,7 @@ class CRUDController extends AbstractDatabaseController
 
     /**
      * @Route("/delete", methods={"GET"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function deleteAction(Request $request)
     {
@@ -106,7 +106,7 @@ class CRUDController extends AbstractDatabaseController
 
     /**
      * @Route("/save", methods={"POST"})
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function saveAction(Request $request)
     {

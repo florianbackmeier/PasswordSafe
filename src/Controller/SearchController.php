@@ -10,7 +10,7 @@ class SearchController extends AbstractController
 {
     /**
      * @Route("/search", name="search")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function searchAction(Request $request)
     {
@@ -32,7 +32,7 @@ class SearchController extends AbstractController
 
     /**
      * @Route("/search_shared", name="search_shared")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function searchSharedAction(Request $request, RSAService $RSAService)
     {

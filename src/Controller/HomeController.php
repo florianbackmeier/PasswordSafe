@@ -19,7 +19,7 @@ class HomeController extends AbstractController {
     /**
      * @Route("/", name="home")
      * @Template("index.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function homeAction()
     {
@@ -32,7 +32,7 @@ class HomeController extends AbstractController {
     /**
      * @Route("/category/{categorySlug}", name="category")
      * @Template("index.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function categoryAction($categorySlug, CategoryService $categoryService)
     {
@@ -47,7 +47,7 @@ class HomeController extends AbstractController {
     /**
      * @Route("/sharedItems", name="sharedItems")
      * @Template("sharedItems.html.twig")
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function sharedItemsAction(RSAService $RSAService)
     {
