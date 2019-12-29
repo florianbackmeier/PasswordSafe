@@ -98,6 +98,9 @@
     "ocramius/proxy-manager": {
         "version": "2.2.0"
     },
+    "php": {
+        "version": "7.3"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
@@ -238,9 +241,6 @@
     },
     "symfony/intl": {
         "version": "v4.0.9"
-    },
-    "symfony/lts": {
-        "version": "4-dev"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
