@@ -4,6 +4,7 @@ namespace App\Security\Authentication;
 use App\Security\DatabaseService;
 use App\Security\EncryptionService;
 use App\Security\Exceptions\InitializationException;
+use App\Service\CategoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,14 +29,16 @@ class SafeAuthenticator implements AuthenticatorInterface
     private $databaseService;
     private $mfaService;
     private $session;
+    private $categoryService;
 
-    public function __construct(RouterInterface $router, EncryptionService $encryptionService, DatabaseService $databaseService, MfaService $mfaService, SessionInterface $session)
+    public function __construct(RouterInterface $router, EncryptionService $encryptionService, DatabaseService $databaseService, MfaService $mfaService, SessionInterface $session, CategoryService $categoryService)
     {
         $this->router = $router;
         $this->encryptionService = $encryptionService;
         $this->databaseService = $databaseService;
         $this->mfaService = $mfaService;
         $this->session = $session;
+        $this->categoryService = $categoryService;
     }
 
     public function start(Request $request, AuthenticationException $authException = null)

@@ -1,12 +1,19 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\DatabaseUsernamePasswordRow;
+use App\Entity\SharedPassword;
+use App\Entity\SharedPasswordType;
+use App\Entity\User;
 use App\Security\Authentication\MfaService;
 use App\Security\Authentication\UsernameKeyToken;
+use App\Security\DatabaseService;
 use App\Security\EncryptionService;
 use App\Security\RSAService;
 use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
+use Doctrine\ORM\EntityManagerInterface;
+use stdClass;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,6 +21,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SettingsController extends AbstractController
 {
+    private $RSAService;
+
+    public function __construct(DatabaseService $databaseService, RSAService $RSAService, EntityManagerInterface $entityManager)
+    {
+        parent::__construct($databaseService, $entityManager);
+        $this->RSAService = $RSAService;
+    }
+
     /**
      * @Route("/settings", name="settings")
      * @Template("settings/overview.html.twig")
@@ -21,7 +36,7 @@ class SettingsController extends AbstractController
      */
     public function settingsAction()
     {
-        return array_merge($this->defaultModel(), array());
+        return array_merge($this->defaultModel(), array('heritages' => $this->getHeritages()));
     }
 
     /**
@@ -157,6 +172,129 @@ class SettingsController extends AbstractController
         $this->databaseService->saveMetaRow($token, $meta);
 
         return $this->redirectToRoute('settings');
+    }
+
+    /**
+     * @Route("/settings/inheritance", name="settingsInheritance", methods={"GET"})
+     * @Template("settings/inheritance.html.twig")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function settingsInheritanceAction()
+    {
+        $inheritance = $this->getPrivateInheritance();
+        if ( !$inheritance ) {
+            $users = $this->getDoctrine()->getRepository(User::class)->findBy([], ['username' => 'ASC']);
+            unset($users[array_search($this->getUser(), $users)]);
+            return array_merge($this->defaultModel(), array('users' => $users, 'csrf_token' => $this->generateToken()));
+        } else {
+            return array_merge($this->defaultModel(), array('inheritance' => $inheritance, 'csrf_token' => $this->generateToken()));
+        }
+    }
+
+    /**
+     * @Route("/settings/inheritance", methods={"POST"})
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function settingsInheritancePostAction(Request $request) {
+        if (!$this->validateToken($request->request->get('csrf_token'))) {
+            return $this->createForbiddenResponse();
+        }
+
+        if ( $request->request->get('task') == 'disableInheritance' ) {
+            $inheritance = $this->getPrivateInheritance();
+
+            $this->getDoctrine()->getManager()->remove($inheritance);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('settingsInheritance');
+        }
+
+        $share = new SharedPassword();
+        $share->setType(SharedPasswordType::INHERITANCE);
+
+        $share->setOrigin($this->getUser());
+        $username = $request->request->get('user');
+        $receiver = $this->getDoctrine()->getRepository(User::class)->find($username);
+        $share->setReceiver($receiver);
+
+        $password = $request->request->get('password');
+        $row = new DatabaseUsernamePasswordRow();
+        $row->setUsername($this->getUser());
+        $row->setPassword($password);
+
+        $encryptedData = $this->RSAService->encrypt($row, $receiver);
+        $share->setEncryptedData($encryptedData);
+
+        $attr = new stdClass();
+        $attr->email = $request->request->get('email');
+        $share->setAttributes($attr);
+
+        $this->getDoctrine()->getManager()->persist($share);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('settingsInheritance');
+    }
+
+    /**
+     * @Route("/settings/heritages", name="settingsHeritages", methods={"GET"})
+     * @Template("settings/heritages.html.twig")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function settingsHeritagesAction()
+    {
+        $model = array('requested' => array());
+
+        $heritages = $this->getHeritages();
+        foreach ( $heritages as $heritage ) {
+            $attr = $heritage->getAttributes();
+            if ( isset($attr->requested) && $attr->requested < time() - 5 * 24 * 60 * 60 *60 ) {
+                $row = $this->RSAService->getSharedItem($heritage->getId(), $this->get('security.token_storage')->getToken());
+                $model['requested'][$heritage->getId()] = $row;
+
+                // Disable MFA for origin
+                $origin = $heritage->getOrigin();
+                $origin->setMfaKey('');
+                $this->getDoctrine()->getManager()->persist($origin);
+                $this->getDoctrine()->getManager()->flush();
+            }
+        }
+        $model['heritages'] = $heritages;
+        $model['csrf_token'] = $this->generateToken();
+        return array_merge($this->defaultModel(), $model);
+    }
+
+    /**
+     * @Route("/settings/heritages/{username}", name="settingsHeritagesUser", methods={"GET"})
+     * @Template("settings/heritages.html.twig")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function settingsHeritagesRequestAction($username)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($username);
+        $heritages = $this->getHeritages();
+        $heritage = array_filter($heritages, function(SharedPassword $h) use ($user) { return $h->getOrigin() == $user; });
+
+        if ( $heritage ) {
+            $heritage = $heritage[0];
+            $attributes = $heritage->getAttributes();
+
+
+            $requester = $this->getUser()->getUsername();
+            mail($attributes->email, 'PasswordSafe - Trusted access requested',
+                "Hello $username\n\r\n\r$requester requested access.\n\r\n\rIf this is not wished by you, please deny the request in the PasswordSafe.\n\r\n\rRegards\n\rPasswordSafe");
+
+            $attributes->requested = time();
+            $heritage->setAttributes($attributes);
+
+            $this->getDoctrine()->getManager()->persist($heritage);
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirectToRoute('settingsHeritages');
+    }
+
+    private function getHeritages() {
+        return $this->entityManager->getRepository(SharedPassword::class)->findBy(array('receiver' => $this->getUser(), 'type' => SharedPasswordType::INHERITANCE));
     }
 
 }

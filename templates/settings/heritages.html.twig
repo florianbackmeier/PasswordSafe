@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Settings{% endblock %}
+
+{% block main %}
+<form action="" method="post">
+  <div class="mdc-card mdc-card--content">
+    <h2 class="mdc-typography--headline6">Heritages</h2>
+
+    <p>You have been entrusted with the sensitive access to someone else data. Use it with care.</p>
+
+    {% for heritage in heritages %}
+    <div>
+      <h3>Heritage from {{heritage.origin.username}}</h3>
+      {% if requested[heritage.id] is defined %}
+        Username: {{heritage.origin.username}}<br />
+        Password: {{requested[heritage.id].password}}
+      {% elseif heritage.attributes.requested is defined %}
+        <b>Access requested: {{heritage.attributes.requested | date('d.m.Y H:i')}}</b>
+        <p>Access will be granted five days later.</p>
+      {% else %}
+        <a class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised" data-mdc-auto-init="MDCRipple" href="{{path('settingsHeritagesUser', {username: heritage.origin.username})}}">Request access</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}

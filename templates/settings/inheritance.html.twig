@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block title %}Settings{% endblock %}
+
+{% block main %}
+<form action="" method="post">
+  <div class="mdc-card mdc-card--content">
+    <h2 class="mdc-typography--headline6">Private inheritance</h2>
+
+    <p>In an emergency case or due to oblivion you can enable one person to be your secure contact. This person can demand access to your password safe.
+      After a request a notification is going to be sent to your email and displayed in the password safe. A demand can be denied by you during five days.
+      At the end of the five days, your secure contact is able to see your main password and disable the two factor authentication.
+    </p>
+
+    {% if inheritance is defined %}
+      <p>
+      Enabled inheritance with {{inheritance.receiver.username}}<br />
+      E-Mail notification {{inheritance.attributes.email}}<br />
+      {% if inheritance.attributes.requested is defined %}
+        <b>Access requested: {{inheritance.attributes.requested | date('d.m.Y H:i')}} - Access will be granted five days later.</b>
+        <p>You can disable the request.</p>
+      {% else %}
+        Inheritance not requested
+      {% endif %}
+      </p>
+
+      <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+          <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settings')}}">Back</a>
+          <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+          <input type="hidden" name="task" value="disableInheritance" />
+          <input type="submit" class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised" data-mdc-auto-init="MDCRipple" value="Disable" />
+        </div>
+      </div>
+    {% else %}
+      <div class="mdc-select category-select" data-mdc-auto-init="MDCSelect">
+        <select name="user"  id="user" class="mdc-select__native-control">
+          <option value="" selected></option>
+          {% for user in users %}
+          <option>{{ user.username }}</option>
+          {% endfor %}
+        </select>
+        <label class="mdc-floating-label" for="user">User</label>
+        <div class="mdc-line-ripple"></div>
+      </div>
+
+      {% include '_elements/textfield.html.twig' with {'type': 'email', 'name': 'email', 'label': 'E-Mail', 'value': '', attr: 'autocomplete="off"'} %}
+
+      {% include '_elements/textfield.html.twig' with {'name': 'password', 'label': 'Main Password', type: 'password', 'value': ''} %}
+
+      <div class="mdc-card__actions">
+          <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settings')}}">Back</a>
+            <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+            <input type="submit" class="mdc-button mdc-card__action mdc-card__action--button mdc-button--raised" data-mdc-auto-init="MDCRipple" value="Enable" />
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

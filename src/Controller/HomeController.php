@@ -10,12 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController {
 
-    public function __construct(DatabaseService $databaseService)
-    {
-        parent::__construct($databaseService);
-    }
-
-
     /**
      * @Route("/", name="home")
      * @Template("index.html.twig")

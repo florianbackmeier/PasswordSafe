@@ -1,7 +1,10 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\SharedPassword;
+use App\Entity\SharedPasswordType;
 use App\Security\DatabaseService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
@@ -10,10 +13,12 @@ class AbstractController extends SymfonyController
 {
 
     protected $databaseService;
+    protected $entityManager;
 
-    public function __construct(DatabaseService $databaseService)
+    public function __construct(DatabaseService $databaseService, EntityManagerInterface $entityManager)
     {
         $this->databaseService = $databaseService;
+        $this->entityManager = $entityManager;
     }
 
     protected function defaultModel()
@@ -22,7 +27,10 @@ class AbstractController extends SymfonyController
 
         $categories = $this->databaseService->getCategories($token);
         natcasesort($categories);
-        return array('categories' => $categories, 'csrf_token' => $this->generateToken());
+
+        $inheritance = $this->getPrivateInheritance();
+
+        return array('categories' => $categories, 'requested_inheritance' => $inheritance && isset($inheritance->getAttributes()->requested), 'csrf_token' => $this->generateToken());
     }
 
     protected function generateToken()
@@ -61,5 +69,9 @@ class AbstractController extends SymfonyController
         $response = new Response();
         $response->setStatusCode($status);
         return $response;
+    }
+
+    protected function getPrivateInheritance() {
+        return $this->entityManager->getRepository(SharedPassword::class)->findOneBy(array('origin' => $this->getUser(), 'type' => SharedPasswordType::INHERITANCE));
     }
 }

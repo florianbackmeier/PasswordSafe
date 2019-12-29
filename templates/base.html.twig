@@ -41,6 +41,9 @@
       </div>
     </nav>
     <main>
+        {% if requested_inheritance is defined and requested_inheritance %}
+            <div class="error">Your inheritance has been requested. <a href="{{path('settingsInheritance')}}">Manage your inheritances</a></div>
+        {% endif %}
         {% block main %}{% endblock %}
     </main>
     <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">

@@ -34,6 +34,16 @@ class SharedPassword
      */
     private $encryptedData;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $attributes;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $type = SharedPasswordType::SHARED;
+
     public function setId(int $id): SharedPassword
     {
         $this->id = $id;
@@ -79,5 +89,29 @@ class SharedPassword
     public function getEncryptedData(): string
     {
         return hex2bin($this->encryptedData);
+    }
+
+    public function setAttributes(object $attributes = null): SharedPassword
+    {
+        $this->attributes = json_encode($attributes);
+
+        return $this;
+    }
+
+    public function getAttributes(): object
+    {
+        return json_decode($this->attributes);
+    }
+
+    public function setType(string $type): SharedPassword
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getType(): SharedPasswordType
+    {
+        return $this->type;
     }
 }

@@ -39,7 +39,7 @@
     <h2 class="mdc-typography--headline6">Personalization</h2>
     <p>
       Set your start category after login
-      <br /><br /><br />
+      <br /><br /><br /><br />
     </p>
     <div class="mdc-card__actions">
         <div class="mdc-card__action-buttons">
@@ -50,8 +50,7 @@
   <div class="mdc-card mdc-card__300 mdc-card--content">
     <h2 class="mdc-typography--headline6">Export</h2>
     <p>
-      Backup your own data encrypted. You download an executable php file where you have to enter the password to see your data.<br />
-      Note: You need to have php with mcrypt installed.
+      Backup your own data encrypted. You download an executable php file where you have to enter the password to see your data.
     </p>
     <div class="mdc-card__actions">
         <div class="mdc-card__action-buttons">
@@ -59,5 +58,29 @@
         </div>
     </div>
   </div>
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+    <h2 class="mdc-typography--headline6">Private inheritance</h2>
+    <p>
+      Select the best known person to manage your private digital inheritance.
+    </p>
+    <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+            <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settingsInheritance')}}">Manage your private inheritance</a>
+        </div>
+    </div>
+  </div>
+  {% if heritages | length > 0 %}
+  <div class="mdc-card mdc-card__300 mdc-card--content">
+        <h2 class="mdc-typography--headline6">Heritages</h2>
+        <p>
+            You have been entrusted with sensitive data. Use this with care and value the data with the trust that has been given to you.
+        </p>
+        <div class="mdc-card__actions">
+            <div class="mdc-card__action-buttons">
+                <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settingsHeritages')}}">Manage your heritages</a>
+            </div>
+        </div>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

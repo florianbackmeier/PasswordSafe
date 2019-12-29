@@ -6,6 +6,7 @@ use App\Entity\SharedPassword;
 use App\Entity\User;
 use App\Security\DatabaseService;
 use App\Security\RSAService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,9 @@ class CRUDController extends AbstractDatabaseController
     private $ENTITY_NAMESPACE = 'App\Entity';
     private $RSAService;
 
-    public function __construct(DatabaseService $databaseService, RSAService $RSAService)
+    public function __construct(DatabaseService $databaseService, RSAService $RSAService, EntityManagerInterface $entityManager)
     {
-        parent::__construct($databaseService);
+        parent::__construct($databaseService, $entityManager);
         $this->RSAService = $RSAService;
     }
 

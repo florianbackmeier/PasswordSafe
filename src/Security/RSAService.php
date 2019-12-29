@@ -2,6 +2,7 @@
 namespace App\Security;
 
 use App\Entity\SharedPassword;
+use App\Entity\SharedPasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\DatabaseRow;
 use App\Entity\User;
@@ -49,7 +50,9 @@ class RSAService
 
     public function getSharedItems($token)
     {
-        $items = $this->entity_manager->getRepository(SharedPassword::class)->findByReceiver($token->getUser());
+        $items1 = $this->entity_manager->getRepository(SharedPassword::class)->findBy(array('receiver' => $token->getUser(), 'type' => SharedPasswordType::SHARED));
+        $items2 = $this->entity_manager->getRepository(SharedPassword::class)->findBy(array('receiver' => $token->getUser(), 'type' => ''));
+        $items = array_merge($items1, $items2);
 
         $rsa = new RSA();
         $rsa->loadKey($this->databaseService->getMeta($token)->get('privateKey'));
