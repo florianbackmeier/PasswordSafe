@@ -32,16 +32,11 @@
         </div>
       </div>
     {% else %}
-      <div class="mdc-select category-select" data-mdc-auto-init="MDCSelect">
-        <select name="user"  id="user" class="mdc-select__native-control">
-          <option value="" selected></option>
-          {% for user in users %}
-          <option>{{ user.username }}</option>
-          {% endfor %}
-        </select>
-        <label class="mdc-floating-label" for="user">User</label>
-        <div class="mdc-line-ripple"></div>
-      </div>
+      {% set options = {} %}
+      {% for user in users %}
+        {% set options = options|merge({(user.username): user.username}) %}
+      {% endfor %}
+      {% include '_elements/select.html.twig' with {'name': 'user', 'label': 'User', 'value': '', options: options, emptyValue: ' '} %}
 
       {% include '_elements/textfield.html.twig' with {'type': 'email', 'name': 'email', 'label': 'E-Mail', 'value': '', attr: 'autocomplete="off"'} %}
 
