@@ -1,0 +1,39 @@
+{% set id = random(1000) %}
+{% if emptyValue is not defined  %}
+{% set emptyValue = false %}
+{% endif %}
+
+
+<div class="mdc-select mdc-select{{id}}" data-mdc-auto-init="MDCSelect">
+  <div class="mdc-select__anchor">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text"></div>
+    <span class="mdc-floating-label">{{label}}</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+    <ul class="mdc-list">
+      {% if emptyValue %}
+        <li class="mdc-list-item" data-value="">{{emptyValue}}</li>
+      {% endif %}
+      {% for key in options|keys %}
+        {% if key == value %}
+          <li class="mdc-list-item mdc-list-item--selected" data-value="{{key}}">{{options[key]}}</li>
+        {% else %}
+          <li class="mdc-list-item" data-value="{{key}}">{{options[key]}}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<input type="hidden" name="{{name}}" value="{{value}}" />
+<script type="text/javascript">
+  setTimeout(() => {
+    const select = document.querySelector('.mdc-select{{id}}');
+
+    select.MDCSelect.listen('MDCSelect:change', () => {
+      document.querySelector('input[name={{name}}]').value = select.MDCSelect.value;
+    });
+  }, 500);
+</script>

@@ -20,11 +20,12 @@
             <ul>
             {% for user in users %}
             <li>
-                <div class="mdc-switch">
-                  <input type="checkbox" id="share{{ user.username }}" class="mdc-switch__native-control" role="switch" name="share[]" value="{{ user.username }}" {{ attribute(entry.attributes.shares, user.username) is defined ? 'checked' : '' }}>
-                  <div class="mdc-switch__background">
-                    <div class="mdc-switch__knob"></div>
-                  </div>
+                <div class="mdc-switch" data-mdc-auto-init="MDCSwitch">
+                    <div class="mdc-switch__track"></div>
+                    <div class="mdc-switch__thumb-underlay">
+                        <div class="mdc-switch__thumb"></div>
+                        <input type="checkbox" id="share{{ user.username }}" class="mdc-switch__native-control" role="switch" name="share[]" value="{{ user.username }}" {{ attribute(entry.attributes.shares, user.username) is defined ? 'checked' : '' }}>
+                    </div>
                 </div>
                 <label for="share{{ user.username }}">{{ user.username }}</label>
             </li>
@@ -33,21 +34,17 @@
             <span class="hint">If you select many users, saving will take some time.</span>
         </div>
         <div class="mdc-tab-panel" id="form_settings">
-            <div class="mdc-select category-select" data-mdc-auto-init="MDCSelect">
-                <select name="category"  class="mdc-select__native-control">
-                    <option value="" selected></option>
-                    {% for categoryItem in categories %}
-                        {% if entry.attributes.category is defined and entry.attributes.category == categoryItem or category == categoryItem %}
-                            <option selected>{{ categoryItem }}</option>
-                        {% else %}
-                            <option>{{ categoryItem }}</option>
-                        {% endif %}
-                    {% endfor %}
-                    <option value="newCategory">New category</option>
-                </select>
-                <label class="mdc-floating-label" for="input_category_input">Category</label>
-                <div class="mdc-line-ripple"></div>
-            </div>
+            {% if entry.attributes.category is defined  %}
+                {% set value = entry.attributes.category %}
+            {% else %}
+                {% set value = '' %}
+            {% endif %}
+            {% set options = {} %}
+            {% for category in categories %}
+                {% set options = options|merge({(category): category}) %}
+            {% endfor %}
+            {% set options = options|merge({'newCategory': 'New category'}) %}
+            {% include '_elements/select.html.twig' with {'name': 'category', 'label': 'Category', 'value': value, options: options, emptyValue: 'Main Category'} %}
             <div class="category-custom" style="display: none;">
                 {% include '_elements/textfield.html.twig' with {'name': 'category_input', 'label': 'Category', 'value': '', attr: 'autocomplete="off"'} %}
                 <button class="mdc-button category-custom-cancel" data-mdc-auto-init="MDCRipple">Cancel</button>
@@ -81,21 +78,19 @@ tabBar.MDCTabBar.listen('MDCTabBar:change', function({ detail }) {
     document.querySelector('.mdc-tab-panel__active').classList.remove('mdc-tab-panel__active');
     panel.classList.add('mdc-tab-panel__active');
 });
-const categorySelect = document.querySelector('.category-select').MDCSelect;
-categorySelect.listen('change', () => {
-    if ( categorySelect.value === 'newCategory' ) {
-        document.querySelector('.category-select').style.display = 'none';
-        document.querySelector('.category-custom').style.display = 'block';
-    }
-});
+
+setTimeout(() => {
+    const categorySelect = document.querySelector('#form_settings .mdc-select').MDCSelect;
+    categorySelect.listen('MDCSelect:change', () => {
+        if ( categorySelect.value === 'newCategory' ) {
+            document.querySelector('#form_settings .mdc-select').style.display = 'none';
+            document.querySelector('.category-custom').style.display = 'block';
+        }
+    });
+}, 500);
 document.querySelector('.category-custom-cancel').addEventListener('click', function(evt) {
     evt.preventDefault();
     document.querySelector('.category-custom').style.display = 'none';
-    document.querySelector('.category-select').style.display = 'inline-block';
-    document.querySelectorAll('.category-select option').forEach(function(option) {
-        if ( option.defaultSelected ) {
-            categorySelect.value = option.value;
-        }
-    });
+    document.querySelector('#form_settings .mdc-select').style.display = 'inline-block';
 });
 {% endblock %}

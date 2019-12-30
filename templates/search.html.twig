@@ -29,8 +29,11 @@ fetch('/search_shared', {method: 'POST', body: formData, credentials: 'include' 
         let container = document.createElement("div");
         container.innerHTML = html;
         shared.appendChild(container);
-        container.querySelector('ul').classList.remove('mdc-card');
-        container.querySelector('ul').classList.remove('mdc-card--entries');
+        const ul = container.querySelector('ul');
+        if ( ul ) {
+            ul.classList.remove('mdc-card');
+            ul.classList.remove('mdc-card--entries');
+        }
     });
   });
 {% endblock %}

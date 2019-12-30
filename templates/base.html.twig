@@ -16,20 +16,15 @@
     </section>
   </div>
 </header>
-<aside class="mdc-drawer mdc-drawer--temporary mdc-typography" data-mdc-auto-init="MDCTemporaryDrawer">
-  <nav class="mdc-drawer__drawer">
+<aside class="mdc-drawer mdc-drawer--dismissible mdc-typography" data-mdc-auto-init="MDCDrawer">
     <header class="mdc-drawer__header">
-      <div class="mdc-drawer__header-content">
-        <img src="/images/logo.svg" />
-        <h1 class="mdc-typography mdc-typography--headline6">PasswordSafe</h1>
-      </div>
+      <<h3 class="mdc-drawer__title">PasswordSafe</h3>
     </header>
     <nav class="mdc-drawer__content mdc-list  mdc-list--dense">
       {% block sideNavigation %}
         {% include '_tpl/navigation.html.twig' %}
       {% endblock %}
     </nav>
-  </nav>
 </aside>
 <div class="page">
     <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
@@ -47,10 +42,12 @@
         {% block main %}{% endblock %}
     </main>
     <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">
-      <div class="mdc-snackbar__text"></div>
-      <div class="mdc-snackbar__action-wrapper">
-        <button type="button" class="mdc-snackbar__action-button"></button>
-      </div>
+        <div class="mdc-snackbar__surface">
+            <div class="mdc-snackbar__label"></div>
+        </div>
+        <div class="mdc-snackbar__actions">
+            <button type="button" class="mdc-button mdc-snackbar__action"></button>
+        </div>
     </div>
 </div>
 {% endblock %}

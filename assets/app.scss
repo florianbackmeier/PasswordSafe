@@ -9,6 +9,8 @@ $borderColor: rgba(0, 0, 0, .1);
 @import "@material/drawer/mdc-drawer";
 @import "@material/typography/mdc-typography";
 @import "@material/list/mdc-list";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
 @import "@material/card/mdc-card";
 @import "@material/fab/mdc-fab";
 @import "@material/button/mdc-button";
@@ -44,6 +46,9 @@ a {
 
 .mdc-top-app-bar {
   z-index: 10;
+}
+.mdc-drawer__toolbar-spacer {
+  margin-top: 64px;
 }
 
 .mdc-container {
@@ -154,18 +159,24 @@ a {
 .mdc-form-field {
   margin-left: -11px;
 }
+.mdc-text-field--textarea {
+  margin-top: 20px;
+}
+
 .mdc-top-app-bar {
   .mdc-text-field--search {
+    @include mdc-text-field-fill-color(rgba(255, 255, 255, 0));
     @include mdc-text-field-bottom-line-color(#fff);
     @include mdc-text-field-ink-color(#fff);
     @include mdc-text-field-label-color(#fff);
     @include mdc-text-field-icon-color(#fff);
 
-    height: 30px !important;
-    margin-top: 0 !important;
+    height: 30px;
+    margin-top: 0;
+    margin-right: 20px;
 
     &.mdc-text-field--with-leading-icon.mdc-text-field--dense .mdc-text-field__icon {
-      bottom: 5px;
+      top: 5px;
     }
     input {
       padding-top: 0;

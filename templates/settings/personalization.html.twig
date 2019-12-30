@@ -5,21 +5,16 @@
 <form action="" method="post">
   <div class="mdc-card mdc-card--content">
     <h2 class="mdc-typography--headline6">Personalization</h2>
-
-    <div class="mdc-select" data-mdc-auto-init="MDCSelect">
-      <select name="startCategory" class="mdc-select__native-control">
-          <option value="_">Main category</option>
-          {% for categoryItem in categories %}
-            {% if meta.map.startCategory is defined and meta.map.startCategory == categoryItem %}
-              <option selected>{{categoryItem}}</option>
-            {% else %}
-              <option>{{categoryItem}}</option>
-            {% endif %}
-          {% endfor %}
-      </select>
-      <label class="mdc-floating-label">Start Category</label>
-      <div class="mdc-line-ripple"></div>
-    </div>
+    {% if meta.map.startCategory is defined  %}
+        {% set value = meta.map.startCategory %}
+    {% else %}
+      {% set value = '' %}
+    {% endif %}
+    {% set options = {} %}
+    {% for category in categories %}
+      {% set options = options|merge({(category): category}) %}
+    {% endfor %}
+    {% include '_elements/select.html.twig' with {'name': 'startCategory', 'label': 'Start Category', 'value': value, options: options, emptyValue: 'Main Category'} %}
     <div class="mdc-card__actions">
         <div class="mdc-card__action-buttons">
             <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settings')}}">Back</a>

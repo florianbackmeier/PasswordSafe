@@ -1,47 +1,62 @@
-module.exports = [{
-    entry: './assets/app.scss',
+const autoprefixer = require('autoprefixer');
+const path = require("path");
+
+module.exports = [];
+module.exports.push({
+    mode: 'production',
+    entry: ['./assets/app.js'],
     output: {
-        // This is necessary for webpack to compile
-        // But we never use style-bundle.js
-        filename: 'style-bundle.js',
+        filename: 'app.js',
+        path: path.resolve(__dirname, 'public/'),
+        libraryTarget: 'var',
+        library: 'App',
     },
     module: {
-        rules: [{
-            test: /\.scss$/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: 'public/app.css',
-                    },
-                },
-                { loader: 'extract-loader' },
-                { loader: 'css-loader' },
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        includePaths: ['./node_modules']
-                    }
-                }
-            ]
-        }]
+        rules: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader'
+            }
+        ],
     },
-}];
+});
 
 module.exports.push({
-    entry: "./assets/app.js",
+    mode: 'production',
+    entry: ['./assets/app.scss'],
     output: {
-        filename: "public/app.js",
-        libraryTarget: 'var',
-        library: 'App'
+        filename: 'style.js',
+        path: path.resolve(__dirname, 'public/'),
     },
     module: {
-        loaders: [{
-            test: /\.js$/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015']
+        rules: [
+            {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'app.css',
+                        },
+                    },
+                    {loader: 'extract-loader'},
+                    {loader: 'css-loader'},
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: () => [autoprefixer()]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sassOptions: {
+                                includePaths: ['./node_modules'],
+                            }
+                        },
+                    }
+                ],
             }
-        }]
+        ],
     },
 });
