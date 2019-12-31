@@ -9,7 +9,6 @@
         {% include '_elements/textfield.html.twig' with {'name': 'ps_user', 'label': 'Username', 'value': last_username, 'attr': 'autofocus="true"'} %}
         {% include '_elements/textfield.html.twig' with {'name': 'ps_pass', 'label': 'Password', 'value': '', type: 'password'} %}
         {% include '_elements/textfield.html.twig' with {'name': 'mfaCode', 'label': '2-Step Authentication Code', 'value': '', type: 'number', attr: 'autocomplete="off"'} %}
-        <div class="mdc-card__content--left">{% include '_elements/checkbox.html.twig' with {'name': 'deviceType', value: 'secure', 'label': 'Secure Device'} %}</div>
 
         <div><button type="submit" class="mdc-button mdc-button--raised">Login</button></div>
     </form>

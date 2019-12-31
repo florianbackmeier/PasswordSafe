@@ -111,12 +111,6 @@ class SafeAuthenticator implements AuthenticatorInterface
     public function supportsRememberMe()
     {
 
-        /*if ($token->getDeviceType() == DeviceType::SECURE) {
-            $this->session->set('EXPIRES', time() + 240 * 60);
-            $userToken->setDeviceType(DeviceType::SECURE);
-        } else {
-            $this->session->set('EXPIRES', time() + 30 * 60);
-        }*/
-        // TODO: Implement supportsRememberMe() method.
+        return false;
     }
 }

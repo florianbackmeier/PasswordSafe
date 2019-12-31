@@ -5,16 +5,18 @@
 <form action="" method="post">
   <div class="mdc-card mdc-card--content">
     <h2 class="mdc-typography--headline6">Personalization</h2>
-    {% if meta.map.startCategory is defined  %}
+    {% if meta.map.startCategory is defined and meta.map.startCategory != ''  %}
         {% set value = meta.map.startCategory %}
+    {% elseif meta.map.startCategory == '' %}
+      {% set value = '_' %}
     {% else %}
-      {% set value = '' %}
+      {% set value = '_' %}
     {% endif %}
-    {% set options = {} %}
+    {% set options = {'_': 'Main category'} %}
     {% for category in categories %}
       {% set options = options|merge({(category): category}) %}
     {% endfor %}
-    {% include '_elements/select.html.twig' with {'name': 'startCategory', 'label': 'Start Category', 'value': value, options: options, emptyValue: 'Main Category'} %}
+    {% include '_elements/select.html.twig' with {'name': 'startCategory', 'label': 'Start Category', 'value': value, options: options} %}
     <div class="mdc-card__actions">
         <div class="mdc-card__action-buttons">
             <a class="mdc-button mdc-card__action mdc-card__action--button" data-mdc-auto-init="MDCRipple" href="{{path('settings')}}">Back</a>
